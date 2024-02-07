@@ -1,3 +1,9 @@
+import { HomePage } from '@/pages'
+
 export const App = () => {
-  return <div>Hello</div>
+  return (
+    <div>
+      <HomePage />
+    </div>
+  )
 }
