@@ -1,10 +1,12 @@
+import { ComponentPropsWithoutRef, ReactNode } from 'react'
+
 import s from './card.module.scss'
 
 type PropsCardType = {
-  title: string
-}
+  children: ReactNode
+} & ComponentPropsWithoutRef<'div'>
 export const Card = (props: PropsCardType) => {
-  const { title } = props
+  const { children } = props
 
-  return <div className={s.cardWrapper}>{title}</div>
+  return <div className={s.cardWrapper}>{children}</div>
 }
