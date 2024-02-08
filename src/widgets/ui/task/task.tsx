@@ -1,14 +1,24 @@
+import { useState } from 'react'
+
 import { EditIcon, TrashIcon } from '@/assets'
 import { Checkbox } from '@/components'
-import { TaskType } from '@/db'
+import { TaskType } from '@/types'
 
 import s from './task.module.scss'
 export const Task = (props: TaskType) => {
-  const { title } = props
+  const { isCompleted, title } = props
+  const [isDone, setIsDone] = useState(isCompleted)
+  const onChangeChecked = (value: boolean) => {
+    setIsDone(!value)
+  }
 
   return (
     <div className={s.task}>
-      <Checkbox label={title} />
+      <Checkbox
+        checked={isDone}
+        label={title}
+        onCheckedChange={() => onChangeChecked(isCompleted)}
+      />
       <div className={s.icons}>
         <EditIcon />
         <TrashIcon className={s.icon} />
