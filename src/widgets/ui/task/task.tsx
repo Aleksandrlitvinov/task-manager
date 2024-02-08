@@ -2,11 +2,15 @@ import { useState } from 'react'
 
 import { EditIcon, TrashIcon } from '@/assets'
 import { Checkbox } from '@/components'
-import { TaskType } from '@/types'
+import { TaskTypeDTO } from '@/types'
 
 import s from './task.module.scss'
-export const Task = (props: TaskType) => {
-  const { isCompleted, title } = props
+
+type TestProps = {
+  removeTask: (id: string) => void
+}
+export const Task = (props: TaskTypeDTO & TestProps) => {
+  const { id, isCompleted, removeTask, title, ...rest } = props
   const [isDone, setIsDone] = useState(isCompleted)
   const onChangeChecked = (value: boolean) => {
     setIsDone(!value)
@@ -18,10 +22,11 @@ export const Task = (props: TaskType) => {
         checked={isDone}
         label={title}
         onCheckedChange={() => onChangeChecked(isCompleted)}
+        {...rest}
       />
       <div className={s.icons}>
         <EditIcon />
-        <TrashIcon className={s.icon} />
+        <TrashIcon className={s.icon} onClick={() => removeTask(id)} />
       </div>
     </div>
   )

@@ -1,20 +1,20 @@
 import React, { ChangeEvent, useState } from 'react'
 
 import { Button, Card, Input, Typography } from '@/components'
-import { TaskType } from '@/types'
+import { TaskTypeDTO } from '@/types'
 import { Task } from '@/widgets/ui/task'
 import { v4 as uuidv4 } from 'uuid'
 
 import s from './taskList.module.scss'
 
 type PropsTaskListType = {
-  tasks: [] | TaskType[]
+  tasks: [] | TaskTypeDTO[]
   title: string
 }
 
 export const TaskList = (props: PropsTaskListType) => {
   const { title } = props
-  const [tasksList, setTasksList] = useState<TaskType[]>([])
+  const [tasksList, setTasksList] = useState<TaskTypeDTO[]>([])
   const [inputValue, setInputValue] = useState<string>('')
   const addTask = (e: React.FormEvent<HTMLFormElement>, task: string) => {
     e.preventDefault()
@@ -33,6 +33,10 @@ export const TaskList = (props: PropsTaskListType) => {
     }
 
     setInputValue('')
+  }
+
+  const removeTask = (id: string) => {
+    setTasksList(tasksList.filter(t => t.id !== id))
   }
 
   const onInputChangeValue = (e: ChangeEvent<HTMLInputElement>) => {
@@ -64,7 +68,13 @@ export const TaskList = (props: PropsTaskListType) => {
       </form>
       <div>
         {tasksList.map(t => (
-          <Task isCompleted={t.isCompleted} key={t.id} title={t.title} />
+          <Task
+            id={t.id}
+            isCompleted={t.isCompleted}
+            key={t.id}
+            removeTask={removeTask}
+            title={t.title}
+          />
         ))}
       </div>
     </Card>

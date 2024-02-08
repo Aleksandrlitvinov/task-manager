@@ -1,6 +1,6 @@
-export type TaskType = {
+export type TaskTypeDTO = {
   addedDate?: string
-  id?: string
+  id: string
   isCompleted: boolean
   order?: number
   title: string
@@ -8,6 +8,6 @@ export type TaskType = {
 
 export type TodoType = {
   id: string
-  tasks: TaskType[]
+  tasks: TaskTypeDTO[]
   title: string
 }
