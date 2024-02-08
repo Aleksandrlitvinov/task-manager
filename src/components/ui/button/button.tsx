@@ -8,7 +8,7 @@ type ButtonPropsType<T extends ElementType = 'button'> = {
   as?: T
   children?: string
   className?: string
-  variant: 'danger' | 'success' | 'warning'
+  variant: 'danger' | 'info' | 'success' | 'warning'
 } & ComponentPropsWithoutRef<'button'>
 export const Button = <T extends ElementType = 'button'>(props: ButtonPropsType<T>) => {
   const { as: Component = 'button', children, variant = 'success', ...rest } = props
