@@ -3,6 +3,7 @@ import React, { ChangeEvent, useState } from 'react'
 import { Button, Input } from '@/components/ui'
 import { TodoType } from '@/types'
 import { TaskList } from '@/widgets'
+import { v4 as uuidv4 } from 'uuid'
 
 import s from './todos.module.scss'
 
@@ -16,7 +17,7 @@ export const TodosPage = () => {
   const createTodo = (e: React.FormEvent<HTMLFormElement>, todo: string) => {
     e.preventDefault()
     const newTodo = {
-      id: 'a2dfe62b-ebce-4b37-9581-1cc77tbc9d9d',
+      id: uuidv4(),
       tasks: [],
       title: todo.toUpperCase(),
     }

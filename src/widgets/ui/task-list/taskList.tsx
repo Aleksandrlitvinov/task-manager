@@ -3,6 +3,7 @@ import React, { ChangeEvent, useState } from 'react'
 import { Button, Card, Input, Typography } from '@/components'
 import { TaskType } from '@/types'
 import { Task } from '@/widgets/ui/task'
+import { v4 as uuidv4 } from 'uuid'
 
 import s from './taskList.module.scss'
 
@@ -19,7 +20,7 @@ export const TaskList = (props: PropsTaskListType) => {
     e.preventDefault()
     const newTask = {
       addedDate: '2019-07-30T12:23:49.677',
-      id: 'a2dfe62b-ebce-4b37-9581-1cc77ebc995f',
+      id: uuidv4(),
       isCompleted: false,
       order: 3,
       title: task,
