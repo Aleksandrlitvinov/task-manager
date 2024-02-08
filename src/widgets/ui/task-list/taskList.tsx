@@ -1,18 +1,19 @@
 import React, { ChangeEvent, useState } from 'react'
 
 import { Button, Card, Input, Typography } from '@/components'
-import { TASKS, TaskType } from '@/db'
+import { TaskType } from '@/types'
 import { Task } from '@/widgets/ui/task'
 
 import s from './taskList.module.scss'
 
 type PropsTaskListType = {
+  tasks: [] | TaskType[]
   title: string
 }
 
 export const TaskList = (props: PropsTaskListType) => {
   const { title } = props
-  const [tasksList, setTasksList] = useState<TaskType[]>(TASKS)
+  const [tasksList, setTasksList] = useState<TaskType[]>([])
   const [inputValue, setInputValue] = useState<string>('')
   const addTask = (e: React.FormEvent<HTMLFormElement>, task: string) => {
     e.preventDefault()
@@ -54,6 +55,7 @@ export const TaskList = (props: PropsTaskListType) => {
         <Input
           onChange={onInputChangeValue}
           onValueChange={inputValue => setInputValue(inputValue)}
+          placeholder={'Enter task title'}
           type={'text'}
           value={inputValue}
         />

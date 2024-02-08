@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 import { EditIcon, TrashIcon } from '@/assets'
 import { Checkbox } from '@/components'
-import { TaskType } from '@/db'
+import { TaskType } from '@/types'
 
 import s from './task.module.scss'
 export const Task = (props: TaskType) => {
