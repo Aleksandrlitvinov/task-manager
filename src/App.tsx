@@ -1,9 +1,5 @@
-import { HomePage } from '@/pages'
+import { Router } from '@/router'
 
 export const App = () => {
-  return (
-    <div>
-      <HomePage />
-    </div>
-  )
+  return <Router />
 }

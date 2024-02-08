@@ -1,12 +1,12 @@
 import React, { ChangeEvent, useState } from 'react'
 
-import { Button, Header, Input } from '@/components/ui'
+import { Button, Input } from '@/components/ui'
 import { TodoType } from '@/types'
 import { TaskList } from '@/widgets'
 
-import s from './home.module.scss'
+import s from './todos.module.scss'
 
-export const HomePage = () => {
+export const TodosPage = () => {
   const [inputValue, setInputValue] = useState<string>('')
   const [todos, setTodos] = useState<TodoType[]>([])
   const onInputChangeValue = (e: ChangeEvent<HTMLInputElement>) => {
@@ -27,7 +27,6 @@ export const HomePage = () => {
 
   return (
     <div>
-      <Header />
       <main className={s.content}>
         <form
           onSubmit={e => createTodo(e, inputValue)}
