@@ -1,15 +1,8 @@
 import { EditIcon, TrashIcon } from '@/assets'
 import { Checkbox } from '@/components'
+import { TaskType } from '@/db'
 
 import s from './task.module.scss'
-
-export type TaskType = {
-  addedDate?: string
-  id?: string
-  order?: number
-  title: string
-}
-
 export const Task = (props: TaskType) => {
   const { title } = props
 

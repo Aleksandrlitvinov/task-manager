@@ -8,7 +8,7 @@
   padding: 5px 10px;
 
   font-weight: var(--font-weight-regular);
-  color: var(--color-dark-500);
+  color: var(--color-light-500);
 
   border: none;
   border-radius: 2px;
@@ -24,4 +24,10 @@
   @include button;
 
   background-color: var(--color-danger-500);
+}
+
+.info {
+  @include button;
+
+  background-color: var(--color-info-500);
 }
