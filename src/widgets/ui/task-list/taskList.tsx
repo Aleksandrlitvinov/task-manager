@@ -1,7 +1,8 @@
 import React, { ChangeEvent, useState } from 'react'
 
-import { Button, Card, Input, Typography } from '@/components'
+import { Button, Card, Typography } from '@/components'
 import { TaskTypeDTO } from '@/types'
+import { AddItemForm } from '@/widgets'
 import { Task } from '@/widgets/ui/task'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -63,25 +64,14 @@ export const TaskList = (props: PropsTaskListType) => {
       <Typography className={s.title} variant={'h2'}>
         {title}
       </Typography>
-      <form
-        onSubmit={e => addTask(e, inputValue)}
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          padding: '10px 0 10px',
-          width: '230px',
-        }}
-      >
-        <Input
-          error={error}
-          onChange={onChangeHandler}
-          onValueChange={onValueChangeHandler}
-          placeholder={'Enter task title'}
-          type={'text'}
-          value={inputValue}
-        />
-        <Button variant={'info'}>+</Button>
-      </form>
+      <AddItemForm
+        addItem={addTask}
+        className={s.form}
+        error={error}
+        inputValue={inputValue}
+        onChangeHandler={onChangeHandler}
+        onValueChangeHandler={onValueChangeHandler}
+      />
       <div>
         {tasksForTodo.map(t => {
           const removeTask = (id: string) => {
