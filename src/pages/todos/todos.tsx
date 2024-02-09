@@ -10,8 +10,14 @@ import s from './todos.module.scss'
 export const TodosPage = () => {
   const [inputValue, setInputValue] = useState<string>('')
   const [todos, setTodos] = useState<TodoType[]>([])
+  const [error, setError] = useState<null | string>(null)
   const onInputChangeValue = (e: ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.currentTarget.value)
+  }
+
+  const onValueChangeHandler = (todoTitle: string) => {
+    setError(null)
+    setInputValue(todoTitle)
   }
 
   const createTodo = (e: React.FormEvent<HTMLFormElement>, todo: string) => {
@@ -22,8 +28,8 @@ export const TodosPage = () => {
       title: todo.toUpperCase(),
     }
 
-    if (todo === '') {
-      alert('enter Todo title')
+    if (todo.trim() === '') {
+      setError('title is required')
     } else {
       setTodos([...todos, newTodo])
       setInputValue('')
@@ -44,13 +50,16 @@ export const TodosPage = () => {
           }}
         >
           <Input
+            error={error}
             onChange={onInputChangeValue}
-            onValueChange={inputValue => setInputValue(inputValue)}
+            onValueChange={onValueChangeHandler}
             placeholder={'Enter todo title'}
             type={'text'}
             value={inputValue}
           />
-          <Button variant={'info'}>Add List</Button>
+          <Button className={s.button} variant={'info'}>
+            Add List
+          </Button>
         </form>
 
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '30px' }}>

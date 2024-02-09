@@ -1,6 +1,7 @@
 import { EditIcon, TrashIcon } from '@/assets'
 import { Checkbox } from '@/components'
 import { TaskTypeDTO } from '@/types'
+import clsx from 'clsx'
 
 import s from './task.module.scss'
 
@@ -15,7 +16,7 @@ export const Task = (props: TaskTypeDTO & TestProps) => {
   }
 
   return (
-    <div className={s.task}>
+    <div className={clsx(s.task, isCompleted && s.isDone)}>
       <Checkbox
         checked={isCompleted}
         className={'checkboxFind'}

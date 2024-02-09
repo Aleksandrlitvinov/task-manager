@@ -19,26 +19,32 @@ export const TaskList = (props: PropsTaskListType) => {
   const [filterTasks, setFilterTasks] = useState<FilterTasksType>('all')
   const [tasksList, setTasksList] = useState<TaskTypeDTO[]>([])
   const [inputValue, setInputValue] = useState<string>('')
-  const addTask = (e: React.FormEvent<HTMLFormElement>, task: string) => {
+  const [error, setError] = useState<null | string>(null)
+  const addTask = (e: React.FormEvent<HTMLFormElement>, taskTitle: string) => {
     e.preventDefault()
     const newTask = {
       addedDate: '2019-07-30T12:23:49.677',
       id: uuidv4(),
       isCompleted: false,
       order: 3,
-      title: task,
+      title: taskTitle,
     }
 
-    if (task === '') {
-      alert('enter title')
+    if (taskTitle.trim() === '') {
+      setError('title is required')
     } else {
-      setTasksList([...tasksList, newTask])
+      setTasksList([newTask, ...tasksList])
     }
 
     setInputValue('')
   }
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.currentTarget.value)
+  }
+
+  const onValueChangeHandler = (taskTitle: string) => {
+    setError(null)
+    setInputValue(taskTitle)
   }
 
   let tasksForTodo = tasksList
@@ -67,8 +73,9 @@ export const TaskList = (props: PropsTaskListType) => {
         }}
       >
         <Input
+          error={error}
           onChange={onChangeHandler}
-          onValueChange={inputValue => setInputValue(inputValue)}
+          onValueChange={onValueChangeHandler}
           placeholder={'Enter task title'}
           type={'text'}
           value={inputValue}
@@ -104,13 +111,13 @@ export const TaskList = (props: PropsTaskListType) => {
         })}
       </div>
       <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '20px' }}>
-        <Button onClick={onAllClickHandler} variant={'info'}>
+        <Button onClick={onAllClickHandler} variant={'success'}>
           All
         </Button>
         <Button onClick={onActiveClickHandler} variant={'success'}>
           Active
         </Button>
-        <Button onClick={onCompletedClickHandler} variant={'danger'}>
+        <Button onClick={onCompletedClickHandler} variant={'success'}>
           Completed
         </Button>
       </div>
