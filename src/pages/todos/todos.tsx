@@ -11,7 +11,7 @@ export const TodosPage = () => {
   const [inputValue, setInputValue] = useState<string>('')
   const [todos, setTodos] = useState<TodoType[]>([])
   const onInputChangeValue = (e: ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value)
+    setInputValue(e.currentTarget.value)
   }
 
   const createTodo = (e: React.FormEvent<HTMLFormElement>, todo: string) => {
@@ -22,8 +22,12 @@ export const TodosPage = () => {
       title: todo.toUpperCase(),
     }
 
-    setTodos([...todos, newTodo])
-    setInputValue('')
+    if (todo === '') {
+      alert('enter Todo title')
+    } else {
+      setTodos([...todos, newTodo])
+      setInputValue('')
+    }
   }
 
   return (
