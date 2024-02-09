@@ -18,13 +18,13 @@ button {
   border-radius: 4px
 }
 
-.CheckboxRoot:hover {
-  background-color: var(--color-light-900);
-}
+//.CheckboxRoot:hover {
+//  background-color: var(--color-light-900);
+//}
 
-.CheckboxRoot:focus {
-  box-shadow: 0 0 0 2px black;
-}
+//.CheckboxRoot:focus {
+//  box-shadow: 0 0 0 2px black;
+//}
 
 .CheckboxIndicator {
   color: var(--color-dark-500);

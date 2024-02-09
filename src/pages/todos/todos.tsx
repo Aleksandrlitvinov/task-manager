@@ -1,33 +1,37 @@
 import React, { ChangeEvent, useState } from 'react'
 
-import { Button, Header, Input } from '@/components/ui'
+import { Button, Input } from '@/components/ui'
 import { TodoType } from '@/types'
 import { TaskList } from '@/widgets'
+import { v4 as uuidv4 } from 'uuid'
 
-import s from './home.module.scss'
+import s from './todos.module.scss'
 
-export const HomePage = () => {
+export const TodosPage = () => {
   const [inputValue, setInputValue] = useState<string>('')
   const [todos, setTodos] = useState<TodoType[]>([])
   const onInputChangeValue = (e: ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value)
+    setInputValue(e.currentTarget.value)
   }
 
   const createTodo = (e: React.FormEvent<HTMLFormElement>, todo: string) => {
     e.preventDefault()
     const newTodo = {
-      id: 'a2dfe62b-ebce-4b37-9581-1cc77tbc9d9d',
+      id: uuidv4(),
       tasks: [],
       title: todo.toUpperCase(),
     }
 
-    setTodos([...todos, newTodo])
-    setInputValue('')
+    if (todo === '') {
+      alert('enter Todo title')
+    } else {
+      setTodos([...todos, newTodo])
+      setInputValue('')
+    }
   }
 
   return (
     <div>
-      <Header />
       <main className={s.content}>
         <form
           onSubmit={e => createTodo(e, inputValue)}
