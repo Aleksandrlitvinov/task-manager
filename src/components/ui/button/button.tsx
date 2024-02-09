@@ -11,10 +11,10 @@ type ButtonPropsType<T extends ElementType = 'button'> = {
   variant: 'danger' | 'info' | 'success' | 'warning'
 } & ComponentPropsWithoutRef<'button'>
 export const Button = <T extends ElementType = 'button'>(props: ButtonPropsType<T>) => {
-  const { as: Component = 'button', children, variant = 'success', ...rest } = props
+  const { as: Component = 'button', children, className, variant = 'success', ...rest } = props
 
   return (
-    <Component className={clsx(s[variant])} {...rest}>
+    <Component className={clsx(s[variant], className)} {...rest}>
       {children}
     </Component>
   )

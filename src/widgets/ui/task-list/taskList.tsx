@@ -19,6 +19,7 @@ export const TaskList = (props: PropsTaskListType) => {
   const [filterTasks, setFilterTasks] = useState<FilterTasksType>('all')
   const [tasksList, setTasksList] = useState<TaskTypeDTO[]>([])
   const [inputValue, setInputValue] = useState<string>('')
+  const [error, setError] = useState<null | string>(null)
   const addTask = (e: React.FormEvent<HTMLFormElement>, taskTitle: string) => {
     e.preventDefault()
     const newTask = {
@@ -30,7 +31,7 @@ export const TaskList = (props: PropsTaskListType) => {
     }
 
     if (taskTitle.trim() === '') {
-      alert('enter title')
+      setError('title is required')
     } else {
       setTasksList([newTask, ...tasksList])
     }
@@ -39,6 +40,11 @@ export const TaskList = (props: PropsTaskListType) => {
   }
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.currentTarget.value)
+  }
+
+  const onValueChangeHandler = (taskTitle: string) => {
+    setError(null)
+    setInputValue(taskTitle)
   }
 
   let tasksForTodo = tasksList
@@ -67,8 +73,9 @@ export const TaskList = (props: PropsTaskListType) => {
         }}
       >
         <Input
+          error={error}
           onChange={onChangeHandler}
-          onValueChange={inputValue => setInputValue(inputValue)}
+          onValueChange={onValueChangeHandler}
           placeholder={'Enter task title'}
           type={'text'}
           value={inputValue}
@@ -104,13 +111,13 @@ export const TaskList = (props: PropsTaskListType) => {
         })}
       </div>
       <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '20px' }}>
-        <Button onClick={onAllClickHandler} variant={'info'}>
+        <Button onClick={onAllClickHandler} variant={'success'}>
           All
         </Button>
         <Button onClick={onActiveClickHandler} variant={'success'}>
           Active
         </Button>
-        <Button onClick={onCompletedClickHandler} variant={'danger'}>
+        <Button onClick={onCompletedClickHandler} variant={'success'}>
           Completed
         </Button>
       </div>
