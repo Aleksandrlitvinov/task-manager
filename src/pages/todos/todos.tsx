@@ -22,7 +22,7 @@ export const TodosPage = () => {
       title: todo.toUpperCase(),
     }
 
-    if (todo === '') {
+    if (todo.trim() === '') {
       alert('enter Todo title')
     } else {
       setTodos([...todos, newTodo])

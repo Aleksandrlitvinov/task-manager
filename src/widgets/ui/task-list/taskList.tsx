@@ -19,20 +19,20 @@ export const TaskList = (props: PropsTaskListType) => {
   const [filterTasks, setFilterTasks] = useState<FilterTasksType>('all')
   const [tasksList, setTasksList] = useState<TaskTypeDTO[]>([])
   const [inputValue, setInputValue] = useState<string>('')
-  const addTask = (e: React.FormEvent<HTMLFormElement>, task: string) => {
+  const addTask = (e: React.FormEvent<HTMLFormElement>, taskTitle: string) => {
     e.preventDefault()
     const newTask = {
       addedDate: '2019-07-30T12:23:49.677',
       id: uuidv4(),
       isCompleted: false,
       order: 3,
-      title: task,
+      title: taskTitle,
     }
 
-    if (task === '') {
+    if (taskTitle.trim() === '') {
       alert('enter title')
     } else {
-      setTasksList([...tasksList, newTask])
+      setTasksList([newTask, ...tasksList])
     }
 
     setInputValue('')
