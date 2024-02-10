@@ -1,8 +1,8 @@
 import React, { ChangeEvent, useState } from 'react'
 
-import { Button, Card } from '@/components'
+import { Card } from '@/components'
 import { TaskTypeDTO } from '@/types'
-import { AddItemForm, EditTitle } from '@/widgets'
+import { AddItemForm, EditTitle, FilterTasks } from '@/widgets'
 import { Task } from '@/widgets/ui/task'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -15,7 +15,7 @@ type PropsTaskListType = {
   title: string
 }
 
-type FilterTasksType = 'active' | 'all' | 'completed'
+export type FilterTasksType = 'active' | 'all' | 'completed'
 
 export const TaskList = (props: PropsTaskListType) => {
   const { id, onChangeTitle, title } = props
@@ -55,12 +55,15 @@ export const TaskList = (props: PropsTaskListType) => {
 
   if (filterTasks === 'active') {
     tasksForTodo = tasksList.filter(t => !t.isCompleted)
-  } else if (filterTasks === 'completed') {
+  }
+  if (filterTasks === 'completed') {
     tasksForTodo = tasksList.filter(t => t.isCompleted)
   }
-  const onAllClickHandler = () => setFilterTasks('all')
-  const onActiveClickHandler = () => setFilterTasks('active')
-  const onCompletedClickHandler = () => setFilterTasks('completed')
+  const onClickSetFilterHandler = (value: string) => {
+    const currentFilter = value.trim().toLowerCase()
+
+    setFilterTasks(currentFilter as FilterTasksType)
+  }
 
   const onEditModeHandler = () => setEditMode(true)
   const onViewMode = (e: ChangeEvent<HTMLInputElement>) => {
@@ -124,17 +127,7 @@ export const TaskList = (props: PropsTaskListType) => {
           )
         })}
       </div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '20px' }}>
-        <Button onClick={onAllClickHandler} variant={'success'}>
-          All
-        </Button>
-        <Button onClick={onActiveClickHandler} variant={'success'}>
-          Active
-        </Button>
-        <Button onClick={onCompletedClickHandler} variant={'success'}>
-          Completed
-        </Button>
-      </div>
+      <FilterTasks filter={filterTasks} onClickSetFilter={onClickSetFilterHandler} />
     </Card>
   )
 }
