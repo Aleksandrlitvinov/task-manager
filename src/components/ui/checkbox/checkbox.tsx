@@ -8,12 +8,11 @@ import s from './checkbox.module.scss'
 type PropsCheckbox = {
   checked?: boolean
   disabled?: boolean
-  label?: string
   onChange?: (checked: boolean) => void
   required?: boolean
 } & ComponentPropsWithoutRef<typeof CheckboxRadix.Root>
 export const Checkbox = forwardRef<ElementRef<typeof CheckboxRadix.Root>, PropsCheckbox>(
-  ({ checked, label, onChange }, ref) => {
+  ({ checked, onChange }, ref) => {
     return (
       <div style={{ alignItems: 'center', display: 'flex' }}>
         <CheckboxRadix.Root
@@ -26,9 +25,6 @@ export const Checkbox = forwardRef<ElementRef<typeof CheckboxRadix.Root>, PropsC
             <CheckIcon />
           </CheckboxRadix.Indicator>
         </CheckboxRadix.Root>
-        <label className={s.Label} htmlFor={label}>
-          {label}
-        </label>
       </div>
     )
   }

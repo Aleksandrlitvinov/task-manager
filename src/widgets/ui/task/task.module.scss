@@ -5,8 +5,10 @@
   padding: 5px 0;
 }
 
-.task.isDone {
-
+.taskTitle {
+  display: flex;
+  gap: 10px;
+  color: var(--color-light-100);
 }
 
 .icons {
@@ -28,6 +30,6 @@
   }
 }
 
-.isDone{
+.isDone {
   opacity: 0.5;
 }

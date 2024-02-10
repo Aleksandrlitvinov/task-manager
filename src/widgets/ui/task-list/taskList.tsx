@@ -88,12 +88,23 @@ export const TaskList = (props: PropsTaskListType) => {
             setTasksList([...tasksList])
           }
 
+          const onChangeTitle = (id: string, newTitle: string) => {
+            const currentTask = tasksList.find(t => t.id === id)
+
+            if (currentTask) {
+              currentTask.title = newTitle
+            }
+
+            setTasksList([...tasksList])
+          }
+
           return (
             <Task
               id={t.id}
               isCompleted={t.isCompleted}
               key={t.id}
               onChangeStatus={onChangeStatus}
+              onChangeTitle={onChangeTitle}
               removeTask={removeTask}
               title={t.title}
             />

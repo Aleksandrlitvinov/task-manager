@@ -1,3 +1,5 @@
+import { ChangeEvent, useState } from 'react'
+
 import { EditIcon, TrashIcon } from '@/assets'
 import { Checkbox } from '@/components'
 import { TaskTypeDTO } from '@/types'
@@ -7,25 +9,53 @@ import s from './task.module.scss'
 
 type TestProps = {
   onChangeStatus: (id: string, isDone: boolean) => void
+  onChangeTitle: (id: string, newTitle: string) => void
   removeTask: (id: string) => void
 }
 export const Task = (props: TaskTypeDTO & TestProps) => {
-  const { id, isCompleted, onChangeStatus, removeTask, title, ...rest } = props
+  const { id, isCompleted, onChangeStatus, onChangeTitle, removeTask, title, ...rest } = props
+  const [editMode, setEditMode] = useState<boolean>(false)
+  const [inputValue, setInputValue] = useState<string>(title)
   const onChangeStatusHandler = (isDone: boolean) => {
     onChangeStatus(id, isDone)
   }
 
+  const onEditModeHandler = () => {
+    setEditMode(true)
+  }
+
+  const onViewMode = (e: ChangeEvent<HTMLInputElement>) => {
+    onChangeTitle(id, e.currentTarget.value)
+    setEditMode(false)
+  }
+
+  const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.currentTarget.value)
+  }
+
   return (
     <div className={clsx(s.task, isCompleted && s.isDone)}>
-      <Checkbox
-        checked={isCompleted}
-        className={'checkboxFind'}
-        label={title}
-        onChange={() => onChangeStatusHandler(!isCompleted)}
-        {...rest}
-      />
+      <div className={s.taskTitle}>
+        <Checkbox
+          checked={isCompleted}
+          onChange={() => onChangeStatusHandler(!isCompleted)}
+          {...rest}
+        />
+        {!editMode ? (
+          <label htmlFor={title}>{title}</label>
+        ) : (
+          <input
+            autoFocus
+            onBlur={onViewMode}
+            onChange={onChangeHandler}
+            style={{ color: 'var(--color-dark-900)', paddingLeft: '5px' }}
+            type={'text'}
+            value={inputValue}
+          />
+        )}
+      </div>
       <div className={s.icons}>
-        <EditIcon className={s.icon} />
+        <EditIcon className={s.icon} onClick={onEditModeHandler} />
         <TrashIcon className={s.icon} onClick={() => removeTask(id)} />
       </div>
     </div>
