@@ -15,16 +15,18 @@ export const AddItemForm = (props: AddItemFormPropsType) => {
   const { addItem, className, error, inputValue, onChangeHandler, onValueChangeHandler } = props
 
   return (
-    <form className={className} onSubmit={e => addItem(e, inputValue)}>
-      <Input
-        error={error}
-        onChange={onChangeHandler}
-        onValueChange={onValueChangeHandler}
-        placeholder={'Enter task title'}
-        type={'text'}
-        value={inputValue}
-      />
-      <Button variant={'info'}>+</Button>
+    <form onSubmit={e => addItem(e, inputValue)}>
+      <div className={className}>
+        <Input
+          error={error}
+          onChange={onChangeHandler}
+          onValueChange={onValueChangeHandler}
+          placeholder={'Enter task title'}
+          type={'text'}
+          value={inputValue}
+        />
+        <Button variant={'info'}>+</Button>
+      </div>
     </form>
   )
 }
