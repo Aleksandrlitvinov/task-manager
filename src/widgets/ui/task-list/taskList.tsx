@@ -1,14 +1,16 @@
 import React, { ChangeEvent, useState } from 'react'
 
-import { Button, Card, Typography } from '@/components'
+import { Button, Card } from '@/components'
 import { TaskTypeDTO } from '@/types'
-import { AddItemForm } from '@/widgets'
+import { AddItemForm, EditTitle } from '@/widgets'
 import { Task } from '@/widgets/ui/task'
 import { v4 as uuidv4 } from 'uuid'
 
 import s from './taskList.module.scss'
 
 type PropsTaskListType = {
+  id: string
+  onChangeTitle: (id: string, newTitle: string) => void
   tasks: [] | TaskTypeDTO[]
   title: string
 }
@@ -16,9 +18,10 @@ type PropsTaskListType = {
 type FilterTasksType = 'active' | 'all' | 'completed'
 
 export const TaskList = (props: PropsTaskListType) => {
-  const { title } = props
+  const { id, onChangeTitle, title } = props
   const [filterTasks, setFilterTasks] = useState<FilterTasksType>('all')
   const [tasksList, setTasksList] = useState<TaskTypeDTO[]>([])
+  const [editMode, setEditMode] = useState<boolean>(false)
   const [inputValue, setInputValue] = useState<string>('')
   const [error, setError] = useState<null | string>(null)
   const addTask = (e: React.FormEvent<HTMLFormElement>, taskTitle: string) => {
@@ -59,11 +62,21 @@ export const TaskList = (props: PropsTaskListType) => {
   const onActiveClickHandler = () => setFilterTasks('active')
   const onCompletedClickHandler = () => setFilterTasks('completed')
 
+  const onEditModeHandler = () => setEditMode(true)
+  const onViewMode = (e: ChangeEvent<HTMLInputElement>) => {
+    onChangeTitle(id, e.currentTarget.value)
+    setEditMode(false)
+  }
+
   return (
     <Card>
-      <Typography className={s.title} variant={'h2'}>
-        {title}
-      </Typography>
+      <EditTitle
+        editMode={editMode}
+        onEditMode={onEditModeHandler}
+        onViewMode={onViewMode}
+        taskTitle={title}
+        textVariant={'h2'}
+      />
       <AddItemForm
         addItem={addTask}
         className={s.form}

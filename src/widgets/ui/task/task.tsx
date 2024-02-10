@@ -3,6 +3,7 @@ import { ChangeEvent, useState } from 'react'
 import { EditIcon, TrashIcon } from '@/assets'
 import { Checkbox } from '@/components'
 import { TaskTypeDTO } from '@/types'
+import { EditTitle } from '@/widgets'
 import clsx from 'clsx'
 
 import s from './task.module.scss'
@@ -15,7 +16,6 @@ type TestProps = {
 export const Task = (props: TaskTypeDTO & TestProps) => {
   const { id, isCompleted, onChangeStatus, onChangeTitle, removeTask, title, ...rest } = props
   const [editMode, setEditMode] = useState<boolean>(false)
-  const [inputValue, setInputValue] = useState<string>(title)
   const onChangeStatusHandler = (isDone: boolean) => {
     onChangeStatus(id, isDone)
   }
@@ -29,10 +29,6 @@ export const Task = (props: TaskTypeDTO & TestProps) => {
     setEditMode(false)
   }
 
-  const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.currentTarget.value)
-  }
-
   return (
     <div className={clsx(s.task, isCompleted && s.isDone)}>
       <div className={s.taskTitle}>
@@ -41,18 +37,12 @@ export const Task = (props: TaskTypeDTO & TestProps) => {
           onChange={() => onChangeStatusHandler(!isCompleted)}
           {...rest}
         />
-        {!editMode ? (
-          <label htmlFor={title}>{title}</label>
-        ) : (
-          <input
-            autoFocus
-            onBlur={onViewMode}
-            onChange={onChangeHandler}
-            style={{ color: 'var(--color-dark-900)', paddingLeft: '5px' }}
-            type={'text'}
-            value={inputValue}
-          />
-        )}
+        <EditTitle
+          editMode={editMode}
+          onViewMode={onViewMode}
+          taskTitle={title}
+          textVariant={'regularText16'}
+        />
       </div>
       <div className={s.icons}>
         <EditIcon className={s.icon} onClick={onEditModeHandler} />
