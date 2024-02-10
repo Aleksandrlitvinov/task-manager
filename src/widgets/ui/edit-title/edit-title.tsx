@@ -22,7 +22,7 @@ export const EditTitle = (props: EditTitlePropsType) => {
   return (
     <>
       {!editMode ? (
-        <Typography onDoubleClick={onEditMode} variant={textVariant}>
+        <Typography onDoubleClick={onEditMode} style={{ userSelect: 'none' }} variant={textVariant}>
           {taskTitle}
         </Typography>
       ) : (
