@@ -35,6 +35,16 @@ export const TodosPage = () => {
     }
   }
 
+  const onChangeTitle = (id: string, newTitle: string) => {
+    const currentTodo = todos.find(t => t.id === id)
+
+    if (currentTodo) {
+      currentTodo.title = newTitle
+    }
+
+    setTodos([...todos])
+  }
+
   return (
     <div>
       <main className={s.content}>
@@ -48,7 +58,13 @@ export const TodosPage = () => {
         />
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '30px' }}>
           {todos.map(todo => (
-            <TaskList key={todo.id} tasks={todo.tasks} title={todo.title} />
+            <TaskList
+              id={todo.id}
+              key={todo.id}
+              onChangeTitle={onChangeTitle}
+              tasks={todo.tasks}
+              title={todo.title}
+            />
           ))}
         </div>
       </main>
