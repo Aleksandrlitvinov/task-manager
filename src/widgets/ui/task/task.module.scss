@@ -8,7 +8,8 @@
 .taskTitle {
   display: flex;
   gap: 10px;
-  color: var(--color-light-100);
+  align-items: center;
+  color: var(--color-info-700);
 }
 
 .icons {

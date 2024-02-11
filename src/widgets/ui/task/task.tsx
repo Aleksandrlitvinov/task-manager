@@ -1,9 +1,10 @@
 import { ChangeEvent, useState } from 'react'
 
 import { EditIcon, TrashIcon } from '@/assets'
-import { Checkbox } from '@/components'
+//import {  CheckboxMui } from '@/components'
 import { TaskTypeDTO } from '@/types'
 import { EditTitle } from '@/widgets'
+import { Checkbox } from '@mui/material'
 import clsx from 'clsx'
 
 import s from './task.module.scss'
@@ -34,6 +35,7 @@ export const Task = (props: TaskTypeDTO & TestProps) => {
       <div className={s.taskTitle}>
         <Checkbox
           checked={isCompleted}
+          color={'success'}
           onChange={() => onChangeStatusHandler(!isCompleted)}
           {...rest}
         />
