@@ -87,6 +87,8 @@ export const TaskList = (props: PropsTaskListType) => {
         inputValue={inputValue}
         onChangeHandler={onChangeHandler}
         onValueChangeHandler={onValueChangeHandler}
+        placeholder={'Add task title'}
+        stylesFor={'task'}
       />
       <div>
         {tasksForTodo.map(t => {
