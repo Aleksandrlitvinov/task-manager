@@ -1,9 +1,9 @@
 import React, { ChangeEvent, useState } from 'react'
 
-import { Card } from '@/components'
 import { TaskTypeDTO } from '@/types'
 import { AddItemForm, EditTitle, FilterTasks } from '@/widgets'
 import { Task } from '@/widgets/ui/task'
+import { Paper } from '@mui/material'
 import { v4 as uuidv4 } from 'uuid'
 
 import s from './taskList.module.scss'
@@ -72,64 +72,66 @@ export const TaskList = (props: PropsTaskListType) => {
   }
 
   return (
-    <Card>
-      <EditTitle
-        editMode={editMode}
-        onEditMode={onEditModeHandler}
-        onViewMode={onViewMode}
-        taskTitle={title}
-        textVariant={'h2'}
-      />
-      <AddItemForm
-        addItem={addTask}
-        className={s.form}
-        error={error}
-        inputValue={inputValue}
-        onChangeHandler={onChangeHandler}
-        onValueChangeHandler={onValueChangeHandler}
-        placeholder={'Add task title'}
-        stylesFor={'task'}
-      />
-      <div>
-        {tasksForTodo.map(t => {
-          const removeTask = (id: string) => {
-            setTasksList(tasksList.filter(t => t.id !== id))
-          }
-
-          const onChangeStatus = (id: string, isDone: boolean) => {
-            const currentTask = tasksList.find(t => t.id === id)
-
-            if (currentTask != null) {
-              currentTask.isCompleted = isDone
+    <Paper elevation={5} style={{ borderRadius: '10px' }}>
+      <div className={s.tasksListWrapper}>
+        <EditTitle
+          editMode={editMode}
+          onEditMode={onEditModeHandler}
+          onViewMode={onViewMode}
+          taskTitle={title}
+          textVariant={'h2'}
+        />
+        <AddItemForm
+          addItem={addTask}
+          className={s.form}
+          error={error}
+          inputValue={inputValue}
+          onChangeHandler={onChangeHandler}
+          onValueChangeHandler={onValueChangeHandler}
+          placeholder={'Add task title'}
+          stylesFor={'task'}
+        />
+        <div className={s.tasksList}>
+          {tasksForTodo.map(t => {
+            const removeTask = (id: string) => {
+              setTasksList(tasksList.filter(t => t.id !== id))
             }
 
-            setTasksList([...tasksList])
-          }
+            const onChangeStatus = (id: string, isDone: boolean) => {
+              const currentTask = tasksList.find(t => t.id === id)
 
-          const onChangeTitle = (id: string, newTitle: string) => {
-            const currentTask = tasksList.find(t => t.id === id)
+              if (currentTask != null) {
+                currentTask.isCompleted = isDone
+              }
 
-            if (currentTask) {
-              currentTask.title = newTitle
+              setTasksList([...tasksList])
             }
 
-            setTasksList([...tasksList])
-          }
+            const onChangeTitle = (id: string, newTitle: string) => {
+              const currentTask = tasksList.find(t => t.id === id)
 
-          return (
-            <Task
-              id={t.id}
-              isCompleted={t.isCompleted}
-              key={t.id}
-              onChangeStatus={onChangeStatus}
-              onChangeTitle={onChangeTitle}
-              removeTask={removeTask}
-              title={t.title}
-            />
-          )
-        })}
+              if (currentTask) {
+                currentTask.title = newTitle
+              }
+
+              setTasksList([...tasksList])
+            }
+
+            return (
+              <Task
+                id={t.id}
+                isCompleted={t.isCompleted}
+                key={t.id}
+                onChangeStatus={onChangeStatus}
+                onChangeTitle={onChangeTitle}
+                removeTask={removeTask}
+                title={t.title}
+              />
+            )
+          })}
+        </div>
+        <FilterTasks filter={filterTasks} onClickSetFilter={onClickSetFilterHandler} />
       </div>
-      <FilterTasks filter={filterTasks} onClickSetFilter={onClickSetFilterHandler} />
-    </Card>
+    </Paper>
   )
 }
