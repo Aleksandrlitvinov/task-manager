@@ -1,1 +1,1 @@
-export { Button } from './button'
+export { stylesBtnFilter, stylesBtnTask, stylesBtnTodo } from './button-styles'

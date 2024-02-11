@@ -1,5 +1,6 @@
-import { Button } from '@/components'
+import { stylesBtnFilter } from '@/components'
 import { FilterTasksType } from '@/widgets/ui/task-list/taskList'
+import { Button, ButtonGroup, ThemeProvider } from '@mui/material'
 
 const buttons = [{ title: 'All' }, { title: 'Active' }, { title: 'Completed' }]
 
@@ -9,15 +10,25 @@ type FilterPropsType = {
 }
 
 export const FilterTasks = (props: FilterPropsType) => {
-  const { onClickSetFilter } = props
+  const { filter, onClickSetFilter } = props
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '20px' }}>
+    <ButtonGroup
+      aria-label={'Disabled button group'}
+      style={{ display: 'flex', justifyContent: 'space-around' }}
+      variant={'outlined'}
+    >
       {buttons.map(b => (
-        <Button key={b.title} onClick={() => onClickSetFilter(b.title)} variant={'success'}>
-          {b.title}
-        </Button>
+        <ThemeProvider key={b.title} theme={stylesBtnFilter}>
+          <Button
+            className={filter === b.title.toLowerCase() ? 'active' : 'default'}
+            key={b.title}
+            onClick={() => onClickSetFilter(b.title)}
+          >
+            {b.title}
+          </Button>
+        </ThemeProvider>
       ))}
-    </div>
+    </ButtonGroup>
   )
 }

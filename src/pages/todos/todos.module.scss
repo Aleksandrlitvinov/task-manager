@@ -5,7 +5,13 @@
 .form {
   display: flex;
   justify-content: space-between;
+
+  width: 300px;
   margin: 0 auto;
   padding: 10px 0 40px;
-  width: 300px;
+}
+
+.myBtn {
+  color: #cc1439;
+  border: 2px solid tomato;
 }

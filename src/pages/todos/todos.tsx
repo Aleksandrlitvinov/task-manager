@@ -2,6 +2,7 @@ import React, { ChangeEvent, useState } from 'react'
 
 import { TodoType } from '@/types'
 import { AddItemForm, TaskList } from '@/widgets'
+import { Grid } from '@mui/material'
 import { v4 as uuidv4 } from 'uuid'
 
 import s from './todos.module.scss'
@@ -55,18 +56,21 @@ export const TodosPage = () => {
           inputValue={inputValue}
           onChangeHandler={onInputChangeValue}
           onValueChangeHandler={onValueChangeHandler}
+          placeholder={'Add todo title'}
+          stylesFor={'todo'}
         />
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '30px' }}>
+        <Grid container spacing={1}>
           {todos.map(todo => (
-            <TaskList
-              id={todo.id}
-              key={todo.id}
-              onChangeTitle={onChangeTitle}
-              tasks={todo.tasks}
-              title={todo.title}
-            />
+            <Grid item key={todo.id} style={{ width: '300px' }}>
+              <TaskList
+                id={todo.id}
+                onChangeTitle={onChangeTitle}
+                tasks={todo.tasks}
+                title={todo.title}
+              />
+            </Grid>
           ))}
-        </div>
+        </Grid>
       </main>
     </div>
   )
