@@ -1,10 +1,10 @@
 import { ChangeEvent, useState } from 'react'
 
-import { EditIcon, TrashIcon } from '@/assets'
-//import {  CheckboxMui } from '@/components'
 import { TaskTypeDTO } from '@/types'
 import { EditTitle } from '@/widgets'
-import { Checkbox } from '@mui/material'
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
+import EditIcon from '@mui/icons-material/Edit'
+import { Checkbox, Fab } from '@mui/material'
 import clsx from 'clsx'
 
 import s from './task.module.scss'
@@ -43,12 +43,16 @@ export const Task = (props: TaskTypeDTO & TestProps) => {
           editMode={editMode}
           onViewMode={onViewMode}
           taskTitle={title}
-          textVariant={'regularText16'}
+          textVariant={'h2'}
         />
       </div>
       <div className={s.icons}>
-        <EditIcon className={s.icon} onClick={onEditModeHandler} />
-        <TrashIcon className={s.icon} onClick={() => removeTask(id)} />
+        <Fab className={s.icon} color={'inherit'}>
+          <EditIcon onClick={onEditModeHandler} />
+        </Fab>
+        <Fab aria-label={'add'} className={s.icon} color={'error'}>
+          <DeleteForeverIcon onClick={() => removeTask(id)} />
+        </Fab>
       </div>
     </div>
   )

@@ -9,7 +9,7 @@
   display: flex;
   gap: 10px;
   align-items: center;
-  color: var(--color-info-700);
+  color: var(--color-dark-100);
 }
 
 .icons {
@@ -18,16 +18,18 @@
   justify-content: space-between;
 
   width: 100%;
-  max-width: 50px;
+  max-width: 65px;
 
   .icon {
     cursor: pointer;
-    width: 20px;
-    height: 20px;
-  }
+    width: 30px;
+    height: 30px;
+    min-height: 20px;
 
-  svg {
-    fill: white;
+    svg {
+      width: 20px;
+      height: 20px;
+    }
   }
 }
 
