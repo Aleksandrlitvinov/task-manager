@@ -38,7 +38,6 @@ export const AddItemForm = (props: AddItemFormPropsType) => {
           type={'text'}
           value={inputValue}
         />
-        {/*<Button variant={'info'}>+</Button>*/}
         <ThemeProvider theme={stylesFor === 'task' ? stylesBtnTask : stylesBtnTodo}>
           <Button type={'submit'} variant={'contained'}>
             <AddIcon />

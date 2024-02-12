@@ -25,7 +25,7 @@ export const Task = (props: TaskTypeDTO & TestProps) => {
     setEditMode(true)
   }
 
-  const onViewMode = (e: ChangeEvent<HTMLInputElement>) => {
+  const onViewMode = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     onChangeTitle(id, e.currentTarget.value)
     setEditMode(false)
   }
@@ -35,12 +35,12 @@ export const Task = (props: TaskTypeDTO & TestProps) => {
       <div className={s.taskTitle}>
         <Checkbox
           checked={isCompleted}
-          color={'success'}
           onChange={() => onChangeStatusHandler(!isCompleted)}
           {...rest}
         />
         <EditTitle
           editMode={editMode}
+          label={'edit'}
           onViewMode={onViewMode}
           taskTitle={title}
           textVariant={'h2'}
