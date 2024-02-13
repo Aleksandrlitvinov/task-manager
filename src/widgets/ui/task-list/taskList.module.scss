@@ -2,15 +2,28 @@
   display: flex;
   justify-content: space-between;
   padding: 10px 0;
+
+  & > div{
+    width: 80%;
+  }
+
+  & > button {
+    width: 15%;
+  }
 }
 
-.title {
-  padding-bottom: 10px;
+.tasksListTitle {
+  padding: 10px 0 10px 10px;
+  color: var(--color-info-500);
+  text-transform: uppercase;
 }
 
 .tasksListWrapper {
+  position: relative;
+
   display: flex;
   flex-direction: column;
+
   min-height: 300px;
   padding: 15px 10px 20px;
 }
@@ -20,10 +33,20 @@
   padding: 10px 0;
 }
 
-.form > div{
-  width: 80%;
-}
+.icons{
+  position: absolute;
+  top: 10px;
+  right: 10px;
 
-.form > button {
-  width: 15%;
+  .icon {
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    min-height: 20px;
+
+    svg {
+      width: 15px;
+      height: 15px;
+    }
+  }
 }

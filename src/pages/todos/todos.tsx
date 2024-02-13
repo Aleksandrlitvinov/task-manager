@@ -9,13 +9,7 @@ import s from './todos.module.scss'
 
 export const TodosPage = () => {
   const [inputValue, setInputValue] = useState<string>('')
-  const [todos, setTodos] = useState<TodoType[]>([
-    {
-      id: uuidv4(),
-      tasks: [],
-      title: 'First',
-    },
-  ])
+  const [todos, setTodos] = useState<TodoType[]>([])
   const [error, setError] = useState<boolean>(false)
   const onInputChangeValue = (e: ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.currentTarget.value)
@@ -37,9 +31,12 @@ export const TodosPage = () => {
     if (todo.trim() === '') {
       setError(true)
     } else {
-      setTodos([...todos, newTodo])
+      setTodos([newTodo, ...todos])
       setInputValue('')
     }
+  }
+  const removeTasksList = (id: string) => {
+    setTodos(todos.filter(t => t.id !== id))
   }
 
   const onChangeTitle = (id: string, newTitle: string) => {
@@ -71,6 +68,7 @@ export const TodosPage = () => {
               <TaskList
                 id={todo.id}
                 onChangeTitle={onChangeTitle}
+                removeTasksList={removeTasksList}
                 tasks={todo.tasks}
                 title={todo.title}
               />

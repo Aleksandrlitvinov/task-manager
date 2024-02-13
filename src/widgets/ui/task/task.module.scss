@@ -33,6 +33,6 @@
   }
 }
 
-.isDone {
-  opacity: 0.5;
+.task.isDone > .taskTitle > p {
+  text-decoration: line-through;
 }
