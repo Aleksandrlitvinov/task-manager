@@ -35,6 +35,9 @@ export const TodosPage = () => {
       setInputValue('')
     }
   }
+  const removeTasksList = (id: string) => {
+    setTodos(todos.filter(t => t.id !== id))
+  }
 
   const onChangeTitle = (id: string, newTitle: string) => {
     const currentTodo = todos.find(t => t.id === id)
@@ -65,6 +68,7 @@ export const TodosPage = () => {
               <TaskList
                 id={todo.id}
                 onChangeTitle={onChangeTitle}
+                removeTasksList={removeTasksList}
                 tasks={todo.tasks}
                 title={todo.title}
               />

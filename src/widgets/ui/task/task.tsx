@@ -48,10 +48,10 @@ export const Task = (props: TaskTypeDTO & TestProps) => {
         />
       </div>
       <div className={s.icons}>
-        <Fab className={s.icon} color={'inherit'}>
-          <EditIcon onClick={onEditModeHandler} />
+        <Fab className={s.icon} color={'inherit'} onClick={onEditModeHandler}>
+          <EditIcon />
         </Fab>
-        <Fab aria-label={'add'} className={s.icon} color={'error'}>
+        <Fab aria-label={'delete'} className={s.icon} color={'error'}>
           <DeleteForeverIcon onClick={() => removeTask(id)} />
         </Fab>
       </div>

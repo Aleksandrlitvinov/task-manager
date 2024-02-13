@@ -3,7 +3,8 @@ import React, { ChangeEvent, useState } from 'react'
 import { TaskTypeDTO } from '@/types'
 import { AddItemForm, EditTitle, FilterTasks } from '@/widgets'
 import { Task } from '@/widgets/ui/task'
-import { Paper } from '@mui/material'
+import ClearIcon from '@mui/icons-material/Clear'
+import { Fab, Paper } from '@mui/material'
 import { v4 as uuidv4 } from 'uuid'
 
 import s from './taskList.module.scss'
@@ -11,6 +12,7 @@ import s from './taskList.module.scss'
 type PropsTaskListType = {
   id: string
   onChangeTitle: (id: string, newTitle: string) => void
+  removeTasksList: (id: string) => void
   tasks: [] | TaskTypeDTO[]
   title: string
 }
@@ -18,7 +20,7 @@ type PropsTaskListType = {
 export type FilterTasksType = 'active' | 'all' | 'completed'
 
 export const TaskList = (props: PropsTaskListType) => {
-  const { id, onChangeTitle, title } = props
+  const { id, onChangeTitle, removeTasksList, title } = props
   const [filterTasks, setFilterTasks] = useState<FilterTasksType>('all')
   const [tasksList, setTasksList] = useState<TaskTypeDTO[]>([])
   const [editMode, setEditMode] = useState<boolean>(false)
@@ -74,14 +76,21 @@ export const TaskList = (props: PropsTaskListType) => {
   return (
     <Paper elevation={5} style={{ borderRadius: '10px' }}>
       <div className={s.tasksListWrapper}>
-        <EditTitle
-          editMode={editMode}
-          label={'edit'}
-          onEditMode={onEditModeHandler}
-          onViewMode={onViewMode}
-          taskTitle={title}
-          textVariant={'h2'}
-        />
+        <div className={s.tasksListHeader}>
+          <EditTitle
+            editMode={editMode}
+            label={'edit'}
+            onEditMode={onEditModeHandler}
+            onViewMode={onViewMode}
+            taskTitle={title}
+            textVariant={'h2'}
+          />
+          <div className={s.icons}>
+            <Fab aria-label={'delete'} className={s.icon} onClick={() => removeTasksList(id)}>
+              <ClearIcon />
+            </Fab>
+          </div>
+        </div>
         <AddItemForm
           addItem={addTask}
           className={s.form}
