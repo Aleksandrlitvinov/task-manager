@@ -1,6 +1,8 @@
 import { ChangeEvent, useState } from 'react'
+import { useDispatch } from 'react-redux'
 
 import { ModalRemove } from '@/components'
+import { changeStatusAC } from '@/redux/slices/tasks-slice/TasksSlice'
 import { TaskTypeDTO } from '@/types'
 import { EditTitle } from '@/widgets'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
@@ -11,16 +13,15 @@ import clsx from 'clsx'
 import s from './task.module.scss'
 
 type TestProps = {
-  onChangeStatus: (id: string, isDone: boolean) => void
   onChangeTitle: (id: string, newTitle: string) => void
-  removeTask: (id: string) => void
 }
 export const Task = (props: TaskTypeDTO & TestProps) => {
-  const { id, isCompleted, onChangeStatus, onChangeTitle, removeTask, title, ...rest } = props
+  const { id, isCompleted, onChangeTitle, title, ...rest } = props
   const [editMode, setEditMode] = useState<boolean>(false)
   const [showModal, setShowModal] = useState<boolean>(false)
+  const dispatch = useDispatch()
   const onChangeStatusHandler = (isDone: boolean) => {
-    onChangeStatus(id, isDone)
+    dispatch(changeStatusAC({ id, isDone }))
   }
 
   const onEditModeHandler = () => {
@@ -53,17 +54,16 @@ export const Task = (props: TaskTypeDTO & TestProps) => {
         <Fab className={s.icon} color={'inherit'} onClick={onEditModeHandler}>
           <EditIcon />
         </Fab>
-        <Fab aria-label={'delete'} className={s.icon} color={'error'}>
-          <DeleteForeverIcon onClick={() => setShowModal(true)} />
+        <Fab
+          aria-label={'delete'}
+          className={s.icon}
+          color={'error'}
+          onClick={() => setShowModal(true)}
+        >
+          <DeleteForeverIcon />
         </Fab>
       </div>
-      <ModalRemove
-        handleClose={() => setShowModal(false)}
-        id={id}
-        open={showModal}
-        removeItem={removeTask}
-        title={title}
-      />
+      <ModalRemove handleClose={() => setShowModal(false)} id={id} open={showModal} title={title} />
     </div>
   )
 }

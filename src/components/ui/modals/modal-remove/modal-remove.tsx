@@ -1,14 +1,20 @@
+import { useDispatch } from 'react-redux'
+
+import { removeTaskAC } from '@/redux/slices/tasks-slice/TasksSlice'
 import { Button, Dialog, DialogActions, DialogTitle } from '@mui/material'
 
 type ModalPropsType = {
   handleClose: () => void
   id: string
   open: boolean
-  removeItem: (id: string) => void
   title: string
 }
 export const ModalRemove = (props: ModalPropsType) => {
-  const { handleClose, id, open, removeItem, title } = props
+  const { handleClose, id, open, title } = props
+  const dispatch = useDispatch()
+  const removeTask = (id: string) => {
+    dispatch(removeTaskAC(id))
+  }
 
   return (
     <Dialog
@@ -22,7 +28,7 @@ export const ModalRemove = (props: ModalPropsType) => {
       </DialogTitle>
       <DialogActions>
         <Button onClick={handleClose}>No</Button>
-        <Button autoFocus onClick={() => removeItem(id)}>
+        <Button autoFocus onClick={() => removeTask(id)}>
           Yes
         </Button>
       </DialogActions>

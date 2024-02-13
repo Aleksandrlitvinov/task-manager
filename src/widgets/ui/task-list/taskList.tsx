@@ -1,12 +1,14 @@
 import React, { ChangeEvent, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { ModalRemove } from '@/components'
+import { RootStateType } from '@/redux'
+import { addTaskAC } from '@/redux/slices/tasks-slice/TasksSlice'
 import { TaskTypeDTO } from '@/types'
 import { AddItemForm, EditTitle, FilterTasks } from '@/widgets'
 import { Task } from '@/widgets/ui/task'
 import ClearIcon from '@mui/icons-material/Clear'
 import { Fab, Paper } from '@mui/material'
-import { v4 as uuidv4 } from 'uuid'
 
 import s from './taskList.module.scss'
 
@@ -21,27 +23,22 @@ type PropsTaskListType = {
 export type FilterTasksType = 'active' | 'all' | 'completed'
 
 export const TaskList = (props: PropsTaskListType) => {
-  const { id, onChangeTitle, removeTasksList, title } = props
+  const dispatch = useDispatch()
+  const { id, onChangeTitle, title } = props
   const [filterTasks, setFilterTasks] = useState<FilterTasksType>('all')
   const [tasksList, setTasksList] = useState<TaskTypeDTO[]>([])
   const [editMode, setEditMode] = useState<boolean>(false)
   const [inputValue, setInputValue] = useState<string>('')
   const [error, setError] = useState<boolean>(false)
   const [showModal, setShowModal] = useState<boolean>(false)
+  const taSks = useSelector((state: RootStateType) => state.tasksList.tasks)
+
   const addTask = (e: React.FormEvent<HTMLFormElement>, taskTitle: string) => {
     e.preventDefault()
-    const newTask = {
-      addedDate: '2019-07-30T12:23:49.677',
-      id: uuidv4(),
-      isCompleted: false,
-      order: 3,
-      title: taskTitle,
-    }
-
     if (taskTitle.trim() === '') {
       setError(true)
     } else {
-      setTasksList([newTask, ...tasksList])
+      dispatch(addTaskAC(taskTitle))
     }
 
     setInputValue('')
@@ -55,7 +52,7 @@ export const TaskList = (props: PropsTaskListType) => {
     setInputValue(taskTitle)
   }
 
-  let tasksForTodo = tasksList
+  let tasksForTodo = taSks
 
   if (filterTasks === 'active') {
     tasksForTodo = tasksList.filter(t => !t.isCompleted)
@@ -87,7 +84,6 @@ export const TaskList = (props: PropsTaskListType) => {
           handleClose={() => setShowModal(false)}
           id={id}
           open={showModal}
-          removeItem={removeTasksList}
           title={title}
         />
         <div className={s.tasksListTitle}>
@@ -111,21 +107,7 @@ export const TaskList = (props: PropsTaskListType) => {
           stylesFor={'task'}
         />
         <div className={s.tasksList}>
-          {tasksForTodo.map(t => {
-            const removeTask = (id: string) => {
-              setTasksList(tasksList.filter(t => t.id !== id))
-            }
-
-            const onChangeStatus = (id: string, isDone: boolean) => {
-              const currentTask = tasksList.find(t => t.id === id)
-
-              if (currentTask != null) {
-                currentTask.isCompleted = isDone
-              }
-
-              setTasksList([...tasksList])
-            }
-
+          {tasksForTodo.map((t: TaskTypeDTO) => {
             const onChangeTitle = (id: string, newTitle: string) => {
               const currentTask = tasksList.find(t => t.id === id)
 
@@ -141,9 +123,7 @@ export const TaskList = (props: PropsTaskListType) => {
                 id={t.id}
                 isCompleted={t.isCompleted}
                 key={t.id}
-                onChangeStatus={onChangeStatus}
                 onChangeTitle={onChangeTitle}
-                removeTask={removeTask}
                 title={t.title}
               />
             )
