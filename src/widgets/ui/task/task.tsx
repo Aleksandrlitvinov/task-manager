@@ -35,6 +35,7 @@ export const Task = (props: TaskTypeDTO & TestProps) => {
       <div className={s.taskTitle}>
         <Checkbox
           checked={isCompleted}
+          color={'success'}
           onChange={() => onChangeStatusHandler(!isCompleted)}
           {...rest}
         />

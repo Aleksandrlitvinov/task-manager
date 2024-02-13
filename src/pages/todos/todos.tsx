@@ -9,13 +9,7 @@ import s from './todos.module.scss'
 
 export const TodosPage = () => {
   const [inputValue, setInputValue] = useState<string>('')
-  const [todos, setTodos] = useState<TodoType[]>([
-    {
-      id: uuidv4(),
-      tasks: [],
-      title: 'First',
-    },
-  ])
+  const [todos, setTodos] = useState<TodoType[]>([])
   const [error, setError] = useState<boolean>(false)
   const onInputChangeValue = (e: ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.currentTarget.value)
