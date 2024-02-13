@@ -16,13 +16,13 @@ export const TodosPage = () => {
       title: 'First',
     },
   ])
-  const [error, setError] = useState<null | string>(null)
+  const [error, setError] = useState<boolean>(false)
   const onInputChangeValue = (e: ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.currentTarget.value)
   }
 
   const onValueChangeHandler = (todoTitle: string) => {
-    setError(null)
+    setError(false)
     setInputValue(todoTitle)
   }
 
@@ -35,7 +35,7 @@ export const TodosPage = () => {
     }
 
     if (todo.trim() === '') {
-      setError('title is required')
+      setError(true)
     } else {
       setTodos([...todos, newTodo])
       setInputValue('')

@@ -1,20 +1,4 @@
-
-.inputWrapper {
-  display: flex;
-  flex-direction: column;
-}
-
-.input {
-  height: 36px;
-  padding: 0 12px;
-}
-
-.error {
-  height: 36px;
-  padding: 0 12px;
-  border: 1px solid var(--color-danger-500);
-}
-
 .errorMessage {
-color: var(--color-danger-500);
+  position: absolute;
+  color: var(--color-danger-500);
 }

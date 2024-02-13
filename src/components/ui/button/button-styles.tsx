@@ -5,8 +5,7 @@ export const stylesBtnTask = createTheme({
       styleOverrides: {
         root: {
           '&:hover': {
-            backgroundColor: '#72aee5',
-            border: '2px solid var(--color-light-100)',
+            backgroundColor: 'var(--color-accent-700)',
             color: 'var(--color-light-100)',
           },
           backgroundColor: 'var(--color-light-100)',
@@ -15,7 +14,6 @@ export const stylesBtnTask = createTheme({
           height: '36px',
           minWidth: '30px',
           padding: '5px',
-          width: '36px',
         },
       },
     },
@@ -28,7 +26,7 @@ export const stylesBtnTodo = createTheme({
       styleOverrides: {
         root: {
           '&:hover': {
-            backgroundColor: '#72aee5',
+            backgroundColor: 'var(--color-accent-700)',
             color: 'var(--color-light-100)',
           },
           backgroundColor: 'var(--color-light-100)',
@@ -37,7 +35,6 @@ export const stylesBtnTodo = createTheme({
           height: '36px',
           minWidth: '30px',
           padding: '5px',
-          width: '36px',
         },
       },
     },

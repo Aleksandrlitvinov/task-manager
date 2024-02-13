@@ -23,7 +23,7 @@ export const TaskList = (props: PropsTaskListType) => {
   const [tasksList, setTasksList] = useState<TaskTypeDTO[]>([])
   const [editMode, setEditMode] = useState<boolean>(false)
   const [inputValue, setInputValue] = useState<string>('')
-  const [error, setError] = useState<null | string>(null)
+  const [error, setError] = useState<boolean>(false)
   const addTask = (e: React.FormEvent<HTMLFormElement>, taskTitle: string) => {
     e.preventDefault()
     const newTask = {
@@ -35,7 +35,7 @@ export const TaskList = (props: PropsTaskListType) => {
     }
 
     if (taskTitle.trim() === '') {
-      setError('title is required')
+      setError(true)
     } else {
       setTasksList([newTask, ...tasksList])
     }
@@ -47,7 +47,7 @@ export const TaskList = (props: PropsTaskListType) => {
   }
 
   const onValueChangeHandler = (taskTitle: string) => {
-    setError(null)
+    setError(false)
     setInputValue(taskTitle)
   }
 
@@ -66,7 +66,7 @@ export const TaskList = (props: PropsTaskListType) => {
   }
 
   const onEditModeHandler = () => setEditMode(true)
-  const onViewMode = (e: ChangeEvent<HTMLInputElement>) => {
+  const onViewMode = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     onChangeTitle(id, e.currentTarget.value)
     setEditMode(false)
   }
@@ -76,6 +76,7 @@ export const TaskList = (props: PropsTaskListType) => {
       <div className={s.tasksListWrapper}>
         <EditTitle
           editMode={editMode}
+          label={'edit'}
           onEditMode={onEditModeHandler}
           onViewMode={onViewMode}
           taskTitle={title}
