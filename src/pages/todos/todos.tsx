@@ -31,7 +31,7 @@ export const TodosPage = () => {
     if (todo.trim() === '') {
       setError(true)
     } else {
-      setTodos([...todos, newTodo])
+      setTodos([newTodo, ...todos])
       setInputValue('')
     }
   }

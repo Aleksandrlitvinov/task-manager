@@ -1,5 +1,6 @@
 import React, { ChangeEvent, useState } from 'react'
 
+import { ModalRemove } from '@/components'
 import { TaskTypeDTO } from '@/types'
 import { AddItemForm, EditTitle, FilterTasks } from '@/widgets'
 import { Task } from '@/widgets/ui/task'
@@ -26,6 +27,7 @@ export const TaskList = (props: PropsTaskListType) => {
   const [editMode, setEditMode] = useState<boolean>(false)
   const [inputValue, setInputValue] = useState<string>('')
   const [error, setError] = useState<boolean>(false)
+  const [showModal, setShowModal] = useState<boolean>(false)
   const addTask = (e: React.FormEvent<HTMLFormElement>, taskTitle: string) => {
     e.preventDefault()
     const newTask = {
@@ -76,7 +78,19 @@ export const TaskList = (props: PropsTaskListType) => {
   return (
     <Paper elevation={5} style={{ borderRadius: '10px' }}>
       <div className={s.tasksListWrapper}>
-        <div className={s.tasksListHeader}>
+        <div className={s.icons}>
+          <Fab aria-label={'delete'} className={s.icon} onClick={() => setShowModal(true)}>
+            <ClearIcon />
+          </Fab>
+        </div>
+        <ModalRemove
+          handleClose={() => setShowModal(false)}
+          id={id}
+          open={showModal}
+          removeItem={removeTasksList}
+          title={title}
+        />
+        <div className={s.tasksListTitle}>
           <EditTitle
             editMode={editMode}
             label={'edit'}
@@ -85,11 +99,6 @@ export const TaskList = (props: PropsTaskListType) => {
             taskTitle={title}
             textVariant={'h2'}
           />
-          <div className={s.icons}>
-            <Fab aria-label={'delete'} className={s.icon} onClick={() => removeTasksList(id)}>
-              <ClearIcon />
-            </Fab>
-          </div>
         </div>
         <AddItemForm
           addItem={addTask}

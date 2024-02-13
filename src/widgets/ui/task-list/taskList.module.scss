@@ -12,21 +12,20 @@
   }
 }
 
-.title {
-  padding-bottom: 10px;
+.tasksListTitle {
+  padding: 10px 0 10px 10px;
+  color: var(--color-info-500);
+  text-transform: uppercase;
 }
 
 .tasksListWrapper {
+  position: relative;
+
   display: flex;
   flex-direction: column;
+
   min-height: 300px;
   padding: 15px 10px 20px;
-}
-
-.tasksListHeader {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
 }
 
 .tasksList {
@@ -35,15 +34,19 @@
 }
 
 .icons{
+  position: absolute;
+  top: 10px;
+  right: 10px;
+
   .icon {
     cursor: pointer;
-    width: 30px;
-    height: 30px;
+    width: 20px;
+    height: 20px;
     min-height: 20px;
 
     svg {
-      width: 20px;
-      height: 20px;
+      width: 15px;
+      height: 15px;
     }
   }
 }
