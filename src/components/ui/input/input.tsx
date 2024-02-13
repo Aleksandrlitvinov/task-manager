@@ -1,11 +1,12 @@
 import { ChangeEvent, ComponentPropsWithoutRef, forwardRef } from 'react'
 
+import { TextField } from '@mui/material'
 import clsx from 'clsx'
 
 import s from './input.module.scss'
 
 type InputPropsType = {
-  error?: null | string
+  error?: boolean
   onValueChange?: (value: string) => void
   type: 'text'
   value?: string
@@ -24,8 +25,9 @@ export const Input = forwardRef<HTMLInputElement, InputPropsType>((props, ref) =
 
   return (
     <div className={s.inputWrapper}>
-      <input
+      <TextField
         className={classNames.input}
+        error={error}
         onChange={onChangeHandler}
         placeholder={placeholder}
         ref={ref}

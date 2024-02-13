@@ -5,16 +5,18 @@ import { Button, ButtonGroup, ThemeProvider } from '@mui/material'
 const buttons = [{ title: 'All' }, { title: 'Active' }, { title: 'Completed' }]
 
 type FilterPropsType = {
+  className?: string
   filter: FilterTasksType
   onClickSetFilter: (value: string) => void
 }
 
 export const FilterTasks = (props: FilterPropsType) => {
-  const { filter, onClickSetFilter } = props
+  const { className, filter, onClickSetFilter } = props
 
   return (
     <ButtonGroup
       aria-label={'Disabled button group'}
+      className={className}
       style={{ display: 'flex', justifyContent: 'space-around' }}
       variant={'outlined'}
     >

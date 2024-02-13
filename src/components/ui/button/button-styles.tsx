@@ -5,18 +5,15 @@ export const stylesBtnTask = createTheme({
       styleOverrides: {
         root: {
           '&:hover': {
-            backgroundColor: '#72aee5',
-            border: '2px solid var(--color-light-100)',
+            backgroundColor: 'var(--color-accent-700)',
             color: 'var(--color-light-100)',
           },
           backgroundColor: 'var(--color-light-100)',
-          border: '2px solid #72aee5',
-          borderRadius: '50%',
-          color: '#72aee5',
+          border: '2px solid var(--color-accent-700)',
+          color: 'var(--color-accent-700)',
           height: '36px',
           minWidth: '30px',
           padding: '5px',
-          width: '36px',
         },
       },
     },
@@ -29,16 +26,15 @@ export const stylesBtnTodo = createTheme({
       styleOverrides: {
         root: {
           '&:hover': {
-            backgroundColor: '#72aee5',
+            backgroundColor: 'var(--color-accent-700)',
             color: 'var(--color-light-100)',
           },
           backgroundColor: 'var(--color-light-100)',
-          border: '2px solid #72aee5',
-          color: '#72aee5',
+          border: '2px solid var(--color-accent-700)',
+          color: 'var(--color-accent-700)',
           height: '36px',
           minWidth: '30px',
           padding: '5px',
-          width: '36px',
         },
       },
     },
@@ -51,26 +47,24 @@ export const stylesBtnFilter = createTheme({
       styleOverrides: {
         root: {
           '&.active': {
-            backgroundColor: '#72aee5',
+            backgroundColor: 'var(--color-accent-700)',
             border: '1px solid var(--color-light-100)',
             borderRadius: '4px',
             color: 'var(--color-light-100)',
             padding: '0 10px',
           },
           '&.default': {
-            border: '1px solid #72aee5',
+            border: '1px solid var(--color-accent-700)',
             borderRadius: '4px',
             fontSize: '14px',
             padding: '0 10px',
           },
           '&:hover': {
-            backgroundColor: '#72aee5',
+            backgroundColor: 'var(--color-accent-700)',
             border: '1px solid var(--color-light-100)',
             color: 'var(--color-light-100)',
           },
-          //backgroundColor: 'var(--color-light-100)',
-          border: '1px solid #72aee5',
-          color: '#72aee5',
+          color: 'var(--color-accent-700)',
 
           padding: '2px',
           textTransform: 'lowercase',

@@ -4,14 +4,19 @@
 
 .form {
   display: flex;
+  align-items: center;
   justify-content: space-between;
 
-  width: 300px;
+  width: 100%;
+  max-width: 400px;
   margin: 0 auto;
   padding: 10px 0 40px;
 }
 
-.myBtn {
-  color: #cc1439;
-  border: 2px solid tomato;
+.form > div{
+  width: 80%;
+}
+
+.form > button {
+  width: 15%;
 }

@@ -1,18 +1,18 @@
 import { ChangeEvent, useState } from 'react'
 
 import { TextVariantType, Typography } from '@/components'
-
-import s from './edit-title.module.scss'
+import { TextField } from '@mui/material'
 
 type EditTitlePropsType = {
   editMode: boolean
+  label: string
   onEditMode?: () => void
-  onViewMode: (e: ChangeEvent<HTMLInputElement>) => void
+  onViewMode: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void
   taskTitle: string
   textVariant: TextVariantType
 }
 export const EditTitle = (props: EditTitlePropsType) => {
-  const { editMode, onEditMode, onViewMode, taskTitle, textVariant } = props
+  const { editMode, label, onEditMode, onViewMode, taskTitle, textVariant } = props
   const [inputValue, setInputValue] = useState<string>(taskTitle)
 
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -26,13 +26,14 @@ export const EditTitle = (props: EditTitlePropsType) => {
           {taskTitle}
         </Typography>
       ) : (
-        <input
+        <TextField
           autoFocus
-          className={s.input}
+          id={'standard-basic'}
+          label={label}
           onBlur={onViewMode}
           onChange={onChangeHandler}
-          type={'text'}
           value={inputValue}
+          variant={'standard'}
         />
       )}
     </>

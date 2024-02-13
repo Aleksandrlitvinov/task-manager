@@ -1,9 +1,9 @@
 import React, { ChangeEvent, useState } from 'react'
 
-import { Card } from '@/components'
 import { TaskTypeDTO } from '@/types'
 import { AddItemForm, EditTitle, FilterTasks } from '@/widgets'
 import { Task } from '@/widgets/ui/task'
+import { Paper } from '@mui/material'
 import { v4 as uuidv4 } from 'uuid'
 
 import s from './taskList.module.scss'
@@ -23,7 +23,7 @@ export const TaskList = (props: PropsTaskListType) => {
   const [tasksList, setTasksList] = useState<TaskTypeDTO[]>([])
   const [editMode, setEditMode] = useState<boolean>(false)
   const [inputValue, setInputValue] = useState<string>('')
-  const [error, setError] = useState<null | string>(null)
+  const [error, setError] = useState<boolean>(false)
   const addTask = (e: React.FormEvent<HTMLFormElement>, taskTitle: string) => {
     e.preventDefault()
     const newTask = {
@@ -35,7 +35,7 @@ export const TaskList = (props: PropsTaskListType) => {
     }
 
     if (taskTitle.trim() === '') {
-      setError('title is required')
+      setError(true)
     } else {
       setTasksList([newTask, ...tasksList])
     }
@@ -47,7 +47,7 @@ export const TaskList = (props: PropsTaskListType) => {
   }
 
   const onValueChangeHandler = (taskTitle: string) => {
-    setError(null)
+    setError(false)
     setInputValue(taskTitle)
   }
 
@@ -66,70 +66,73 @@ export const TaskList = (props: PropsTaskListType) => {
   }
 
   const onEditModeHandler = () => setEditMode(true)
-  const onViewMode = (e: ChangeEvent<HTMLInputElement>) => {
+  const onViewMode = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     onChangeTitle(id, e.currentTarget.value)
     setEditMode(false)
   }
 
   return (
-    <Card>
-      <EditTitle
-        editMode={editMode}
-        onEditMode={onEditModeHandler}
-        onViewMode={onViewMode}
-        taskTitle={title}
-        textVariant={'h2'}
-      />
-      <AddItemForm
-        addItem={addTask}
-        className={s.form}
-        error={error}
-        inputValue={inputValue}
-        onChangeHandler={onChangeHandler}
-        onValueChangeHandler={onValueChangeHandler}
-        placeholder={'Add task title'}
-        stylesFor={'task'}
-      />
-      <div>
-        {tasksForTodo.map(t => {
-          const removeTask = (id: string) => {
-            setTasksList(tasksList.filter(t => t.id !== id))
-          }
-
-          const onChangeStatus = (id: string, isDone: boolean) => {
-            const currentTask = tasksList.find(t => t.id === id)
-
-            if (currentTask != null) {
-              currentTask.isCompleted = isDone
+    <Paper elevation={5} style={{ borderRadius: '10px' }}>
+      <div className={s.tasksListWrapper}>
+        <EditTitle
+          editMode={editMode}
+          label={'edit'}
+          onEditMode={onEditModeHandler}
+          onViewMode={onViewMode}
+          taskTitle={title}
+          textVariant={'h2'}
+        />
+        <AddItemForm
+          addItem={addTask}
+          className={s.form}
+          error={error}
+          inputValue={inputValue}
+          onChangeHandler={onChangeHandler}
+          onValueChangeHandler={onValueChangeHandler}
+          placeholder={'Add task title'}
+          stylesFor={'task'}
+        />
+        <div className={s.tasksList}>
+          {tasksForTodo.map(t => {
+            const removeTask = (id: string) => {
+              setTasksList(tasksList.filter(t => t.id !== id))
             }
 
-            setTasksList([...tasksList])
-          }
+            const onChangeStatus = (id: string, isDone: boolean) => {
+              const currentTask = tasksList.find(t => t.id === id)
 
-          const onChangeTitle = (id: string, newTitle: string) => {
-            const currentTask = tasksList.find(t => t.id === id)
+              if (currentTask != null) {
+                currentTask.isCompleted = isDone
+              }
 
-            if (currentTask) {
-              currentTask.title = newTitle
+              setTasksList([...tasksList])
             }
 
-            setTasksList([...tasksList])
-          }
+            const onChangeTitle = (id: string, newTitle: string) => {
+              const currentTask = tasksList.find(t => t.id === id)
 
-          return (
-            <Task
-              id={t.id}
-              isCompleted={t.isCompleted}
-              key={t.id}
-              onChangeStatus={onChangeStatus}
-              onChangeTitle={onChangeTitle}
-              removeTask={removeTask}
-              title={t.title}
-            />
-          )
-        })}
+              if (currentTask) {
+                currentTask.title = newTitle
+              }
+
+              setTasksList([...tasksList])
+            }
+
+            return (
+              <Task
+                id={t.id}
+                isCompleted={t.isCompleted}
+                key={t.id}
+                onChangeStatus={onChangeStatus}
+                onChangeTitle={onChangeTitle}
+                removeTask={removeTask}
+                title={t.title}
+              />
+            )
+          })}
+        </div>
+        <FilterTasks filter={filterTasks} onClickSetFilter={onClickSetFilterHandler} />
       </div>
-      <FilterTasks filter={filterTasks} onClickSetFilter={onClickSetFilterHandler} />
-    </Card>
+    </Paper>
   )
 }
