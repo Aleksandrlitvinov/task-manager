@@ -3,28 +3,28 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import { ModalRemove } from '@/components'
 import { RootStateType } from '@/redux'
-import { addTaskAC } from '@/redux/slices/tasks-slice/TasksSlice'
+import { addTaskAC } from '@/redux/slices/tasks-slice/tasksSlice'
 import { TaskTypeDTO } from '@/types'
 import { AddItemForm, EditTitle, FilterTasks } from '@/widgets'
 import { Task } from '@/widgets/ui/task'
 import ClearIcon from '@mui/icons-material/Clear'
 import { Fab, Paper } from '@mui/material'
 
-import s from './taskList.module.scss'
+import s from './todo.module.scss'
 
 type PropsTaskListType = {
   id: string
   onChangeTitle: (id: string, newTitle: string) => void
-  removeTasksList: (id: string) => void
+  removeTodo: (id: string) => void
   tasks: [] | TaskTypeDTO[]
   title: string
 }
 
 export type FilterTasksType = 'active' | 'all' | 'completed'
 
-export const TaskList = (props: PropsTaskListType) => {
+export const Todo = (props: PropsTaskListType) => {
   const dispatch = useDispatch()
-  const { id, onChangeTitle, title } = props
+  const { id, onChangeTitle, removeTodo, title } = props
   const [filterTasks, setFilterTasks] = useState<FilterTasksType>('all')
   const [tasksList, setTasksList] = useState<TaskTypeDTO[]>([])
   const [editMode, setEditMode] = useState<boolean>(false)
@@ -84,6 +84,7 @@ export const TaskList = (props: PropsTaskListType) => {
           handleClose={() => setShowModal(false)}
           id={id}
           open={showModal}
+          removeItem={removeTodo}
           title={title}
         />
         <div className={s.tasksListTitle}>

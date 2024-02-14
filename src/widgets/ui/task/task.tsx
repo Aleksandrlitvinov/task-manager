@@ -2,7 +2,7 @@ import { ChangeEvent, useState } from 'react'
 import { useDispatch } from 'react-redux'
 
 import { ModalRemove } from '@/components'
-import { changeStatusAC } from '@/redux/slices/tasks-slice/TasksSlice'
+import { changeStatusAC } from '@/redux/slices/tasks-slice/tasksSlice'
 import { TaskTypeDTO } from '@/types'
 import { EditTitle } from '@/widgets'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever'

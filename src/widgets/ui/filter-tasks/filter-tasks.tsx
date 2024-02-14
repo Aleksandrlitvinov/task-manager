@@ -1,5 +1,5 @@
 import { stylesBtnFilter } from '@/components'
-import { FilterTasksType } from '@/widgets/ui/task-list/taskList'
+import { FilterTasksType } from '@/widgets/ui/todo/todo'
 import { Button, ButtonGroup, ThemeProvider } from '@mui/material'
 
 const buttons = [{ title: 'All' }, { title: 'Active' }, { title: 'Completed' }]
