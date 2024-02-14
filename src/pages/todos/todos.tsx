@@ -1,16 +1,18 @@
 import React, { ChangeEvent, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
-import { TodoType } from '@/types'
-import { AddItemForm, TaskList } from '@/widgets'
+import { RootStateType } from '@/redux'
+import { createTodoList, removeTodoList } from '@/redux/slices/todos-slice/todoListsSlice'
+import { AddItemForm, Todo } from '@/widgets'
 import { Grid } from '@mui/material'
-import { v4 as uuidv4 } from 'uuid'
 
 import s from './todos.module.scss'
 
 export const TodosPage = () => {
   const [inputValue, setInputValue] = useState<string>('')
-  const [todos, setTodos] = useState<TodoType[]>([])
   const [error, setError] = useState<boolean>(false)
+  const todos = useSelector((state: RootStateType) => state.todoLists.todoLists)
+  const dispatch = useDispatch()
   const onInputChangeValue = (e: ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.currentTarget.value)
   }
@@ -20,33 +22,17 @@ export const TodosPage = () => {
     setInputValue(todoTitle)
   }
 
-  const addTodo = (e: React.FormEvent<HTMLFormElement>, todo: string) => {
+  const addTodo = (e: React.FormEvent<HTMLFormElement>, todoTitle: string) => {
     e.preventDefault()
-    const newTodo = {
-      id: uuidv4(),
-      tasks: [],
-      title: todo.toUpperCase(),
-    }
-
-    if (todo.trim() === '') {
+    if (todoTitle.trim() === '') {
       setError(true)
     } else {
-      setTodos([newTodo, ...todos])
+      dispatch(createTodoList({ todoTitle: todoTitle }))
       setInputValue('')
     }
   }
-  const removeTasksList = (id: string) => {
-    setTodos(todos.filter(t => t.id !== id))
-  }
-
-  const onChangeTitle = (id: string, newTitle: string) => {
-    const currentTodo = todos.find(t => t.id === id)
-
-    if (currentTodo) {
-      currentTodo.title = newTitle
-    }
-
-    setTodos([...todos])
+  const removeTodo = (id: string) => {
+    dispatch(removeTodoList({ todoId: id }))
   }
 
   return (
@@ -62,16 +48,10 @@ export const TodosPage = () => {
           placeholder={'Add todo title'}
           stylesFor={'todo'}
         />
-        <Grid container spacing={1}>
+        <Grid container spacing={3}>
           {todos.map(todo => (
             <Grid item key={todo.id} style={{ width: '300px' }}>
-              <TaskList
-                id={todo.id}
-                onChangeTitle={onChangeTitle}
-                removeTasksList={removeTasksList}
-                tasks={todo.tasks}
-                title={todo.title}
-              />
+              <Todo id={todo.id} removeTodo={removeTodo} title={todo.title} />
             </Grid>
           ))}
         </Grid>
