@@ -2,11 +2,7 @@ import React, { ChangeEvent, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { RootStateType } from '@/redux'
-import {
-  addTodoList,
-  changeTodoTitle,
-  removeTodoList,
-} from '@/redux/slices/todos-slice/todoListsSlice'
+import { createTodoList, removeTodoList } from '@/redux/slices/todos-slice/todoListsSlice'
 import { AddItemForm, Todo } from '@/widgets'
 import { Grid } from '@mui/material'
 
@@ -31,16 +27,12 @@ export const TodosPage = () => {
     if (todoTitle.trim() === '') {
       setError(true)
     } else {
-      dispatch(addTodoList({ todoTitle: todoTitle }))
+      dispatch(createTodoList({ todoTitle: todoTitle }))
       setInputValue('')
     }
   }
   const removeTodo = (id: string) => {
     dispatch(removeTodoList({ todoId: id }))
-  }
-
-  const onChangeTitle = (id: string, newTitle: string) => {
-    dispatch(changeTodoTitle({ newTodoTitle: newTitle, todoId: id }))
   }
 
   return (
@@ -56,16 +48,10 @@ export const TodosPage = () => {
           placeholder={'Add todo title'}
           stylesFor={'todo'}
         />
-        <Grid container spacing={1}>
+        <Grid container spacing={3}>
           {todos.map(todo => (
             <Grid item key={todo.id} style={{ width: '300px' }}>
-              <Todo
-                id={todo.id}
-                onChangeTitle={onChangeTitle}
-                removeTodo={removeTodo}
-                tasks={todo.tasks}
-                title={todo.title}
-              />
+              <Todo id={todo.id} removeTodo={removeTodo} title={todo.title} />
             </Grid>
           ))}
         </Grid>

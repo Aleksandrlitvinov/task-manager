@@ -5,9 +5,3 @@ export type TaskTypeDTO = {
   order?: number
   title: string
 }
-
-export type TodoType = {
-  id: string
-  tasks: TaskTypeDTO[]
-  title: string
-}
