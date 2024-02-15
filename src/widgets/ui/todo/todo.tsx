@@ -1,9 +1,9 @@
 import React, { ChangeEvent, useState } from 'react'
-import { useDispatch } from 'react-redux'
 
 import { ModalRemove } from '@/components'
-import { addTaskAC, createTasksList } from '@/redux/slices/tasks-slice/tasksSlice'
-import { changeTodoTitle } from '@/redux/slices/todos-slice/todoListsSlice'
+import { useAppDispatch } from '@/hooks'
+import { addTask, createTasksList } from '@/redux/slices/tasks-slice/tasksSlice'
+import { FilterTasksType, changeTodoTitle } from '@/redux/slices/todos-slice/todoListsSlice'
 import { AddItemForm, EditTitle, FilterTasks, TasksList } from '@/widgets'
 import ClearIcon from '@mui/icons-material/Clear'
 import { Fab, Paper } from '@mui/material'
@@ -16,10 +16,8 @@ type PropsTaskListType = {
   title: string
 }
 
-export type FilterTasksType = 'active' | 'all' | 'completed'
-
 export const Todo = (props: PropsTaskListType) => {
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const { id, removeTodo, title } = props
   const [filterTasks, setFilterTasks] = useState<FilterTasksType>('all')
   const [editMode, setEditMode] = useState<boolean>(false)
@@ -27,13 +25,13 @@ export const Todo = (props: PropsTaskListType) => {
   const [error, setError] = useState<boolean>(false)
   const [showModal, setShowModal] = useState<boolean>(false)
 
-  const addTask = (e: React.FormEvent<HTMLFormElement>, taskTitle: string) => {
+  const addNewTask = (e: React.FormEvent<HTMLFormElement>, taskTitle: string) => {
     e.preventDefault()
     if (taskTitle.trim() === '') {
       setError(true)
     } else {
       dispatch(createTasksList({ todoId: id }))
-      dispatch(addTaskAC({ newTaskTitle: taskTitle, todoId: id }))
+      dispatch(addTask({ newTaskTitle: taskTitle, todoId: id }))
     }
 
     setInputValue('')
@@ -88,7 +86,7 @@ export const Todo = (props: PropsTaskListType) => {
           />
         </div>
         <AddItemForm
-          addItem={addTask}
+          addItem={addNewTask}
           className={s.form}
           error={error}
           inputValue={inputValue}
