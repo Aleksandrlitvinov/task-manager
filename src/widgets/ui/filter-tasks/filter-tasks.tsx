@@ -2,7 +2,7 @@ import { stylesBtnFilter } from '@/components'
 import { FilterTasksType } from '@/redux'
 import { Button, ButtonGroup, ThemeProvider } from '@mui/material'
 
-const buttons = [{ title: 'All' }, { title: 'Active' }, { title: 'Completed' }]
+const buttons = [{ title: 'all' }, { title: 'active' }, { title: 'completed' }]
 
 type FilterPropsType = {
   className?: string
@@ -23,7 +23,7 @@ export const FilterTasks = (props: FilterPropsType) => {
       {buttons.map(b => (
         <ThemeProvider key={b.title} theme={stylesBtnFilter}>
           <Button
-            className={filter === b.title.toLowerCase() ? 'active' : 'default'}
+            className={filter === b.title ? 'active' : 'default'}
             key={b.title}
             onClick={() => onClickSetFilter(b.title)}
           >
