@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 
+import { useAppDispatch, useAppSelector } from '@/hooks'
 import { RootStateType } from '@/redux'
 import { createTodoList, removeTodoList } from '@/redux/slices/todos-slice/todoListsSlice'
 import { AddItemForm, Todo } from '@/widgets'
@@ -11,8 +11,8 @@ import s from './todos.module.scss'
 export const TodosPage = () => {
   const [inputValue, setInputValue] = useState<string>('')
   const [error, setError] = useState<boolean>(false)
-  const todos = useSelector((state: RootStateType) => state.todoLists.todoLists)
-  const dispatch = useDispatch()
+  const todos = useAppSelector((state: RootStateType) => state.todoLists.todoLists)
+  const dispatch = useAppDispatch()
   const onInputChangeValue = (e: ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.currentTarget.value)
   }

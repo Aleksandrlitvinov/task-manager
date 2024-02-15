@@ -23,7 +23,7 @@ const tasksSlice = createSlice({
   initialState,
   name: 'tasks',
   reducers: {
-    addTaskAC: (state, action: PayloadAction<{ newTaskTitle: string; todoId: string }>) => {
+    addTask: (state, action: PayloadAction<{ newTaskTitle: string; todoId: string }>) => {
       const newTask = {
         id: uuidv4(),
         isCompleted: false,
@@ -35,7 +35,7 @@ const tasksSlice = createSlice({
         ...state.tasksListsForTodos[action.payload.todoId],
       ]
     },
-    changeStatusAC: (
+    changeStatus: (
       state,
       action: PayloadAction<{ id: string; isDone: boolean; todoId: string }>
     ) => {
@@ -75,7 +75,7 @@ const tasksSlice = createSlice({
       state.tasksListsForTodos = { ...newListForTodo, ...state.tasksListsForTodos }
     },
 
-    removeTaskAC: (state, action: PayloadAction<{ taskId: string; todoId: string }>) => {
+    removeTask: (state, action: PayloadAction<{ taskId: string; todoId: string }>) => {
       state.tasksListsForTodos[action.payload.todoId] = state.tasksListsForTodos[
         action.payload.todoId
       ].filter((task: TaskTypeDTO) => task.id !== action.payload.taskId)
@@ -83,6 +83,6 @@ const tasksSlice = createSlice({
   },
 })
 
-export const { addTaskAC, changeStatusAC, changeTaskTitle, createTasksList, removeTaskAC } =
+export const { addTask, changeStatus, changeTaskTitle, createTasksList, removeTask } =
   tasksSlice.actions
 export default tasksSlice.reducer

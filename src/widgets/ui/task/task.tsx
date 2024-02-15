@@ -1,12 +1,8 @@
 import { ChangeEvent, useState } from 'react'
-import { useDispatch } from 'react-redux'
 
 import { ModalRemove } from '@/components'
-import {
-  changeStatusAC,
-  changeTaskTitle,
-  removeTaskAC,
-} from '@/redux/slices/tasks-slice/tasksSlice'
+import { useAppDispatch } from '@/hooks'
+import { changeStatus, changeTaskTitle, removeTask } from '@/redux'
 import { TaskTypeDTO } from '@/types'
 import { EditTitle } from '@/widgets'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
@@ -24,9 +20,9 @@ export const Task = (props: TaskTypeDTO & TestProps) => {
   const { id, isCompleted, onChangeTitle, title, todoId, ...rest } = props
   const [editMode, setEditMode] = useState<boolean>(false)
   const [showModal, setShowModal] = useState<boolean>(false)
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const onChangeStatusHandler = (isDone: boolean) => {
-    dispatch(changeStatusAC({ id, isDone, todoId }))
+    dispatch(changeStatus({ id, isDone, todoId }))
   }
 
   const onEditModeHandler = () => {
@@ -41,8 +37,8 @@ export const Task = (props: TaskTypeDTO & TestProps) => {
     setEditMode(false)
   }
 
-  const removeTask = (taskId: string) => {
-    dispatch(removeTaskAC({ taskId: taskId, todoId: todoId }))
+  const deleteTask = (taskId: string) => {
+    dispatch(removeTask({ taskId: taskId, todoId: todoId }))
   }
 
   return (
@@ -79,7 +75,7 @@ export const Task = (props: TaskTypeDTO & TestProps) => {
         handleClose={() => setShowModal(false)}
         id={id}
         open={showModal}
-        removeItem={removeTask}
+        removeItem={deleteTask}
         title={title}
       />
     </div>

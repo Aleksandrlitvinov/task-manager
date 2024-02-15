@@ -1,8 +1,10 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { v4 as uuidv4 } from 'uuid'
 
+export type FilterTasksType = 'active' | 'all' | 'completed'
+
 type TodoType = {
-  filter: string
+  filter: FilterTasksType
   id: string
   title: string
 }
@@ -30,7 +32,7 @@ const todoListsSlice = createSlice({
     },
     createTodoList: (state, action: PayloadAction<{ todoTitle: string }>) => {
       const newTodo = {
-        filter: 'all',
+        filter: 'all' as FilterTasksType,
         id: uuidv4(),
         title: action.payload.todoTitle,
       }

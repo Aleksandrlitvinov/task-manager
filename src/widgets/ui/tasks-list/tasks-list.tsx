@@ -1,6 +1,5 @@
-import { useSelector } from 'react-redux'
-
-import { RootStateType } from '@/redux'
+import { useAppSelector } from '@/hooks'
+import { FilterTasksType } from '@/redux'
 import { TaskTypeDTO } from '@/types'
 import { Task } from '@/widgets'
 
@@ -9,11 +8,9 @@ type TasksListProps = {
   todoId: string
 }
 
-export type FilterTasksType = 'active' | 'all' | 'completed'
-
 export const TasksList = (props: TasksListProps) => {
   const { filter, todoId } = props
-  const tasks = useSelector((state: RootStateType) => state.tasksList.tasksListsForTodos)
+  const tasks = useAppSelector(state => state.tasksList.tasksListsForTodos)
 
   let tasksForTodo = tasks[todoId]
 
