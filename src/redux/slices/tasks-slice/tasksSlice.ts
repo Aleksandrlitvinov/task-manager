@@ -10,13 +10,13 @@ export type TaskTypeDTO = {
 }
 
 type TasksState = {
-  tasksListsForTodos: {
+  tasksForTodos: {
     [todoId: string]: [] | TaskTypeDTO[]
   }
 }
 
 const initialState: TasksState = {
-  tasksListsForTodos: {},
+  tasksForTodos: {},
 }
 
 const tasksSlice = createSlice({
@@ -30,16 +30,16 @@ const tasksSlice = createSlice({
         title: action.payload.newTaskTitle,
       }
 
-      state.tasksListsForTodos[action.payload.todoId] = [
+      state.tasksForTodos[action.payload.todoId] = [
         newTask,
-        ...state.tasksListsForTodos[action.payload.todoId],
+        ...state.tasksForTodos[action.payload.todoId],
       ]
     },
     changeStatus: (
       state,
       action: PayloadAction<{ id: string; isDone: boolean; todoId: string }>
     ) => {
-      const currentTask = state.tasksListsForTodos[action.payload.todoId].find(
+      const currentTask = state.tasksForTodos[action.payload.todoId].find(
         t => t.id === action.payload.id
       )
 
@@ -47,15 +47,13 @@ const tasksSlice = createSlice({
         currentTask.isCompleted = action.payload.isDone
       }
 
-      state.tasksListsForTodos[action.payload.todoId] = [
-        ...state.tasksListsForTodos[action.payload.todoId],
-      ]
+      state.tasksForTodos[action.payload.todoId] = [...state.tasksForTodos[action.payload.todoId]]
     },
     changeTaskTitle: (
       state,
       action: PayloadAction<{ newTaskTitle: string; taskId: string; todoId: string }>
     ) => {
-      const currentTask = state.tasksListsForTodos[action.payload.todoId].find(
+      const currentTask = state.tasksForTodos[action.payload.todoId].find(
         task => task.id === action.payload.taskId
       )
 
@@ -63,20 +61,18 @@ const tasksSlice = createSlice({
         currentTask.title = action.payload.newTaskTitle
       }
 
-      state.tasksListsForTodos[action.payload.todoId] = [
-        ...state.tasksListsForTodos[action.payload.todoId],
-      ]
+      state.tasksForTodos[action.payload.todoId] = [...state.tasksForTodos[action.payload.todoId]]
     },
     createTasksList: (state, action: PayloadAction<{ todoId: string }>) => {
       const newListForTodo = {
         [action.payload.todoId]: [],
       }
 
-      state.tasksListsForTodos = { ...newListForTodo, ...state.tasksListsForTodos }
+      state.tasksForTodos = { ...newListForTodo, ...state.tasksForTodos }
     },
 
     removeTask: (state, action: PayloadAction<{ taskId: string; todoId: string }>) => {
-      state.tasksListsForTodos[action.payload.todoId] = state.tasksListsForTodos[
+      state.tasksForTodos[action.payload.todoId] = state.tasksForTodos[
         action.payload.todoId
       ].filter((task: TaskTypeDTO) => task.id !== action.payload.taskId)
     },

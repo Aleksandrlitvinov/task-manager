@@ -1,5 +1,5 @@
 import { stylesBtnFilter } from '@/components'
-import { FilterTasksType } from '@/widgets/ui/todo/todo'
+import { FilterTasksType } from '@/redux'
 import { Button, ButtonGroup, ThemeProvider } from '@mui/material'
 
 const buttons = [{ title: 'All' }, { title: 'Active' }, { title: 'Completed' }]

@@ -10,7 +10,7 @@ type TasksListProps = {
 
 export const TasksList = (props: TasksListProps) => {
   const { filter, todoId } = props
-  const tasks = useAppSelector(state => state.tasksList.tasksListsForTodos)
+  const tasks = useAppSelector(state => state.tasksList.tasksForTodos)
 
   let tasksForTodo = tasks[todoId]
 

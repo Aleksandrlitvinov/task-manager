@@ -1,18 +1,22 @@
 import { ChangeEvent, ComponentPropsWithoutRef, forwardRef } from 'react'
 
 import { TextField } from '@mui/material'
+import { TextFieldProps } from '@mui/material/TextField/TextField'
 import clsx from 'clsx'
 
 import s from './input.module.scss'
 
 type InputPropsType = {
-  error?: boolean
+  errorInput?: string
+  label?: string
   onValueChange?: (value: string) => void
   type: 'text'
   value?: string
 } & ComponentPropsWithoutRef<'input'>
-export const Input = forwardRef<HTMLInputElement, InputPropsType>((props, ref) => {
-  const { error, onValueChange, placeholder, type, value } = props
+
+type GenInputType = InputPropsType & TextFieldProps
+export const Input = forwardRef<HTMLInputElement, GenInputType>((props, ref) => {
+  const { error, errorInput, label, onValueChange, placeholder, type, value, ...rest } = props
 
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     if (onValueChange) {
@@ -25,6 +29,7 @@ export const Input = forwardRef<HTMLInputElement, InputPropsType>((props, ref) =
 
   return (
     <div className={s.inputWrapper}>
+      {label && <div className={s.label}>{label}</div>}
       <TextField
         className={classNames.input}
         error={error}
@@ -33,8 +38,9 @@ export const Input = forwardRef<HTMLInputElement, InputPropsType>((props, ref) =
         ref={ref}
         type={type}
         value={value}
+        {...rest}
       />
-      {error && <div className={s.errorMessage}>title is required</div>}
+      {errorInput && <div className={s.errorMessage}>{errorInput}</div>}
     </div>
   )
 })
