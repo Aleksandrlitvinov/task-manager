@@ -1,4 +1,15 @@
+.inputWrapper {
+  position: relative;
+}
+
 .errorMessage {
   position: absolute;
   color: var(--color-danger-500);
+}
+
+.label {
+  position: absolute;
+  top: -25px;
+  left: 5px;
+  color: var(--color-dark-300)
 }

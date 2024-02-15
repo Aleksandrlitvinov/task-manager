@@ -1,0 +1,15 @@
+.form{
+  width: 100%;
+  padding: 20px;
+
+  .textField {
+    padding: 20px 0;
+  }
+
+  .formBtn, .formCheckbox {
+    width: 100%;
+    max-width: 200px;
+    margin: 0 auto;
+    padding: 10px 0;
+  }
+}
