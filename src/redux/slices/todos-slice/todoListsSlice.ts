@@ -10,25 +10,25 @@ type TodoType = {
 }
 
 type TodoListsType = {
-  todoLists: [] | TodoType[]
+  todos: [] | TodoType[]
 }
 
 const initialState: TodoListsType = {
-  todoLists: [],
+  todos: [],
 }
 
 const todoListsSlice = createSlice({
   initialState,
-  name: 'todoLists',
+  name: 'todos',
   reducers: {
     changeTodoTitle: (state, action: PayloadAction<{ newTodoTitle: string; todoId: string }>) => {
-      const currentTodo = state.todoLists.find(todo => todo.id === action.payload.todoId)
+      const currentTodo = state.todos.find(todo => todo.id === action.payload.todoId)
 
       if (currentTodo) {
         currentTodo.title = action.payload.newTodoTitle
       }
 
-      state.todoLists = [...state.todoLists]
+      state.todos = [...state.todos]
     },
     createTodoList: (state, action: PayloadAction<{ todoTitle: string }>) => {
       const newTodo = {
@@ -37,10 +37,10 @@ const todoListsSlice = createSlice({
         title: action.payload.todoTitle,
       }
 
-      state.todoLists = [newTodo, ...state.todoLists]
+      state.todos = [newTodo, ...state.todos]
     },
     removeTodoList: (state, action: PayloadAction<{ todoId: string }>) => {
-      state.todoLists = state.todoLists.filter(todo => todo.id !== action.payload.todoId)
+      state.todos = state.todos.filter(todo => todo.id !== action.payload.todoId)
     },
   },
 })

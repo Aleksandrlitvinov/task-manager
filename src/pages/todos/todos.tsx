@@ -11,7 +11,7 @@ import s from './todos.module.scss'
 export const TodosPage = () => {
   const [inputValue, setInputValue] = useState<string>('')
   const [error, setError] = useState<boolean>(false)
-  const todos = useAppSelector((state: RootStateType) => state.todoLists.todoLists)
+  const todos = useAppSelector((state: RootStateType) => state.todoLists.todos)
   const dispatch = useAppDispatch()
   const onInputChangeValue = (e: ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.currentTarget.value)
