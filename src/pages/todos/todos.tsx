@@ -4,9 +4,11 @@ import { useAppDispatch, useAppSelector } from '@/hooks'
 import { RootStateType } from '@/redux'
 import { createTodoList, removeTodoList } from '@/redux/slices/todos-slice/todoListsSlice'
 import { AddItemForm, Todo } from '@/widgets'
-import { Grid } from '@mui/material'
+import { Grid, ThemeProvider } from '@mui/material'
 
 import s from './todos.module.scss'
+
+import { stylesTodos } from './todos.styles'
 
 export const TodosPage = () => {
   const [inputValue, setInputValue] = useState<string>('')
@@ -48,13 +50,15 @@ export const TodosPage = () => {
           placeholder={'Add todo title'}
           stylesFor={'todo'}
         />
-        <Grid container spacing={3}>
-          {todos.map(todo => (
-            <Grid item key={todo.id} style={{ width: '300px' }}>
-              <Todo id={todo.id} removeTodo={removeTodo} title={todo.title} />
-            </Grid>
-          ))}
-        </Grid>
+        <ThemeProvider theme={stylesTodos}>
+          <Grid container>
+            {todos.map(todo => (
+              <Grid item key={todo.id}>
+                <Todo id={todo.id} removeTodo={removeTodo} title={todo.title} />
+              </Grid>
+            ))}
+          </Grid>
+        </ThemeProvider>
       </main>
     </div>
   )

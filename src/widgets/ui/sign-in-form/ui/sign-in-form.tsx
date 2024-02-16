@@ -1,6 +1,8 @@
 import { Controller, FormProvider, useForm } from 'react-hook-form'
 
 import { Input, stylesAddItemForm, stylesBtnTask } from '@/components'
+import { useAppDispatch } from '@/hooks'
+import { login } from '@/redux'
 import { loginFormValuesType, loginSchema } from '@/widgets'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button, Checkbox, FormControlLabel, FormGroup, ThemeProvider } from '@mui/material'
@@ -8,6 +10,7 @@ import { Button, Checkbox, FormControlLabel, FormGroup, ThemeProvider } from '@m
 import s from './sign-in-form.module.scss'
 
 export const SignInForm = () => {
+  const dispatch = useAppDispatch()
   const methods = useForm<loginFormValuesType>({
     defaultValues: {
       email: '',
@@ -17,7 +20,12 @@ export const SignInForm = () => {
     resolver: zodResolver(loginSchema()),
   })
 
-  const onHandleSubmit = (data: loginFormValuesType) => console.log(data)
+  const onHandleSubmit = async (data: loginFormValuesType) => {
+    await dispatch(login(data))
+      .unwrap()
+      .then(res => console.log(res.data.userId))
+      .catch(err => console.log(err))
+  }
 
   return (
     <FormProvider {...methods}>
