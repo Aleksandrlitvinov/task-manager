@@ -10,7 +10,7 @@ export const instance = axios.create({
   withCredentials: true,
 })
 
-export enum ResponseResultCodeEnum {
+export enum ResultCodeEnum {
   ERROR = 1,
   SUCCESS = 0,
 }
@@ -18,5 +18,11 @@ export enum ResponseResultCodeEnum {
 export type ApiResponseType<T> = {
   data: T
   messages: string[]
-  resultCode: ResponseResultCodeEnum
+  resultCode: ResultCodeEnum
+}
+
+export type LogoutResponseType = {
+  data: null
+  messages: string[]
+  resultCode: ResultCodeEnum
 }

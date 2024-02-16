@@ -2,7 +2,7 @@ import { Controller, FormProvider, useForm } from 'react-hook-form'
 
 import { Input, stylesAddItemForm, stylesBtnTask } from '@/components'
 import { useAppDispatch } from '@/hooks'
-import { login } from '@/redux/slices/auth-slice/auth-slice'
+import { login } from '@/redux'
 import { loginFormValuesType, loginSchema } from '@/widgets'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button, Checkbox, FormControlLabel, FormGroup, ThemeProvider } from '@mui/material'
@@ -20,8 +20,8 @@ export const SignInForm = () => {
     resolver: zodResolver(loginSchema()),
   })
 
-  const onHandleSubmit = (data: loginFormValuesType) => {
-    dispatch(login(data))
+  const onHandleSubmit = async (data: loginFormValuesType) => {
+    await dispatch(login(data))
       .unwrap()
       .then(res => console.log(res.data.userId))
       .catch(err => console.log(err))

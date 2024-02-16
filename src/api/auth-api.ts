@@ -1,4 +1,4 @@
-import { ApiResponseType, instance } from './api'
+import { ApiResponseType, LogoutResponseType, instance } from './api'
 
 export const authApi = {
   login(data: RequestLoginType) {
@@ -7,7 +7,7 @@ export const authApi = {
       .then(res => res.data)
   },
   logout() {
-    return instance.delete(`/auth/login`).then(res => res.data)
+    return instance.delete<LogoutResponseType>(`/auth/login`).then(res => res.data)
   },
   me() {
     return instance.get<ApiResponseType<ResponseMeType>>(`auth/me`).then(res => res.data)
