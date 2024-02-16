@@ -20,9 +20,3 @@ export type ApiResponseType<T> = {
   messages: string[]
   resultCode: ResultCodeEnum
 }
-
-export type LogoutResponseType = {
-  data: null
-  messages: string[]
-  resultCode: ResultCodeEnum
-}
