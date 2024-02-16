@@ -15,14 +15,8 @@ export enum ResultCodeEnum {
   SUCCESS = 0,
 }
 
-export type ApiResponseType<T> = {
+export type ApiResponseType<T = {}> = {
   data: T
-  messages: string[]
-  resultCode: ResultCodeEnum
-}
-
-export type LogoutResponseType = {
-  data: null
   messages: string[]
   resultCode: ResultCodeEnum
 }

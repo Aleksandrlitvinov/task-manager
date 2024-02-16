@@ -11,6 +11,7 @@ export const ModalRemove = (props: ModalPropsType) => {
   const { handleClose, id, open, removeItem, title } = props
   const removeTask = (id: string) => {
     removeItem(id)
+    handleClose()
   }
 
   return (

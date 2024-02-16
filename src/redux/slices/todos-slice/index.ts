@@ -1,7 +1,8 @@
 export {
   changeTodoTitle,
-  createTodoList,
-  removeTodoList,
+  createTodo,
+  getTodos,
+  removeTodo,
   todosSliceReducer,
 } from './todoListsSlice'
 export type { FilterTasksType } from './todoListsSlice'
