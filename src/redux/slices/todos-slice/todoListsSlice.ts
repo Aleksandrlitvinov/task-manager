@@ -1,49 +1,77 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit'
-import { v4 as uuidv4 } from 'uuid'
+import { RequestTodosType, RequestUpdateType, ResultCodeEnum, todosApi } from '@/api'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
 export type FilterTasksType = 'active' | 'all' | 'completed'
 
 type TodoType = {
-  filter: FilterTasksType
+  addedDate: string
   id: string
+  order: number
   title: string
 }
 
 type TodoListsType = {
+  filter: FilterTasksType
+  isLoading: boolean
   todos: [] | TodoType[]
 }
 
 const initialState: TodoListsType = {
+  filter: 'all',
+  isLoading: false,
   todos: [],
 }
 
 const todoListsSlice = createSlice({
+  extraReducers: builder => {
+    builder.addCase(getTodos.pending, state => {
+      state.isLoading = true
+    })
+    builder.addCase(getTodos.fulfilled, (state, action) => {
+      state.todos = [...action.payload]
+      state.isLoading = false
+    })
+    builder.addCase(createTodo.fulfilled, (state, action) => {
+      state.todos = [action.payload.data.item, ...state.todos]
+    })
+    builder.addCase(removeTodo.fulfilled, (state, action) => {
+      state.todos = state.todos.filter(todo => todo.id !== action.payload)
+    })
+    builder.addCase(changeTodoTitle.fulfilled, (state, action) => {
+      const currentTodoList = state.todos.find(todo => todo.id === action.payload.todoId)
+
+      if (currentTodoList) {
+        currentTodoList.title = action.payload.title
+      }
+    })
+  },
   initialState,
   name: 'todos',
-  reducers: {
-    changeTodoTitle: (state, action: PayloadAction<{ newTodoTitle: string; todoId: string }>) => {
-      const currentTodo = state.todos.find(todo => todo.id === action.payload.todoId)
-
-      if (currentTodo) {
-        currentTodo.title = action.payload.newTodoTitle
-      }
-
-      state.todos = [...state.todos]
-    },
-    createTodoList: (state, action: PayloadAction<{ todoTitle: string }>) => {
-      const newTodo = {
-        filter: 'all' as FilterTasksType,
-        id: uuidv4(),
-        title: action.payload.todoTitle,
-      }
-
-      state.todos = [newTodo, ...state.todos]
-    },
-    removeTodoList: (state, action: PayloadAction<{ todoId: string }>) => {
-      state.todos = state.todos.filter(todo => todo.id !== action.payload.todoId)
-    },
-  },
+  reducers: {},
 })
 
+export const getTodos = createAsyncThunk(`getTodos`, async () => {
+  return await todosApi.getTodos()
+})
+export const createTodo = createAsyncThunk(`addTodo`, async (data: RequestTodosType) => {
+  return await todosApi.createTodo({ title: data.title })
+})
+
+export const removeTodo = createAsyncThunk(`removeTodo`, async (todoId: string) => {
+  const data = await todosApi.removeTodo(todoId)
+
+  if (data.resultCode === ResultCodeEnum.SUCCESS) {
+    return todoId
+  }
+})
+
+export const changeTodoTitle = createAsyncThunk(
+  `changeTodoTitle`,
+  async ({ title, todoId }: RequestUpdateType) => {
+    await todosApi.updateTodoTitle({ title, todoId })
+
+    return { title, todoId }
+  }
+)
+
 export const todosSliceReducer = todoListsSlice.reducer
-export const { changeTodoTitle, createTodoList, removeTodoList } = todoListsSlice.actions

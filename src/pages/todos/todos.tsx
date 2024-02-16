@@ -1,8 +1,7 @@
 import React, { ChangeEvent, useState } from 'react'
 
 import { useAppDispatch, useAppSelector } from '@/hooks'
-import { RootStateType } from '@/redux'
-import { createTodoList, removeTodoList } from '@/redux/slices/todos-slice/todoListsSlice'
+import { RootStateType, createTodo, removeTodo } from '@/redux'
 import { AddItemForm, Todo } from '@/widgets'
 import { Grid, ThemeProvider } from '@mui/material'
 
@@ -24,17 +23,17 @@ export const TodosPage = () => {
     setInputValue(todoTitle)
   }
 
-  const addTodo = (e: React.FormEvent<HTMLFormElement>, todoTitle: string) => {
+  const addTodo = async (e: React.FormEvent<HTMLFormElement>, todoTitle: string) => {
     e.preventDefault()
     if (todoTitle.trim() === '') {
       setError(true)
     } else {
-      dispatch(createTodoList({ todoTitle: todoTitle }))
+      await dispatch(createTodo({ title: todoTitle }))
       setInputValue('')
     }
   }
-  const removeTodo = (id: string) => {
-    dispatch(removeTodoList({ todoId: id }))
+  const removeTodoList = async (id: string) => {
+    await dispatch(removeTodo(id))
   }
 
   return (
@@ -54,7 +53,7 @@ export const TodosPage = () => {
           <Grid container>
             {todos.map(todo => (
               <Grid item key={todo.id}>
-                <Todo id={todo.id} removeTodo={removeTodo} title={todo.title} />
+                <Todo id={todo.id} removeTodo={removeTodoList} title={todo.title} />
               </Grid>
             ))}
           </Grid>

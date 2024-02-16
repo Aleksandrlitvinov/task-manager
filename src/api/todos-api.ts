@@ -10,7 +10,7 @@ export const todosApi = {
     return instance.get<ResponseTodoListItem[]>(`/todo-lists`).then(res => res.data)
   },
   removeTodo(todoId: string) {
-    return instance.delete<ApiResponseType<null>>(`/todo-lists/${todoId}`).then(res => res.data)
+    return instance.delete<ApiResponseType>(`/todo-lists/${todoId}`).then(res => res.data)
   },
   updateTodoTitle({ title, todoId }: RequestUpdateType) {
     return instance.put(`/todo-lists/${todoId}`, { title: title }).then(res => res.data)
@@ -28,10 +28,11 @@ type ResponseTodoListItem = {
   title: string
 }
 
-type RequestTodosType = {
+export type RequestTodosType = {
   title: string
 }
-type RequestUpdateType = {
+
+export type RequestUpdateType = {
   title: string
   todoId: string
 }

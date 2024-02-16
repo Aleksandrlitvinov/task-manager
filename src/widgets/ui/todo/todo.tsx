@@ -45,18 +45,18 @@ export const Todo = (props: PropsTaskListType) => {
     setInputValue(taskTitle)
   }
   const onClickSetFilterHandler = (value: string) => {
-    const currentFilter = value.trim().toLowerCase()
+    const currentFilter = value.trim()
 
     setFilterTasks(currentFilter as FilterTasksType)
   }
 
   const onEditModeHandler = () => setEditMode(true)
 
-  const onChangeTitle = (id: string, newTitle: string) => {
-    dispatch(changeTodoTitle({ newTodoTitle: newTitle, todoId: id }))
+  const onChangeTitle = async (id: string, newTitle: string) => {
+    await dispatch(changeTodoTitle({ title: newTitle, todoId: id }))
   }
-  const onViewMode = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    onChangeTitle(id, e.currentTarget.value)
+  const onViewMode = async (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    await onChangeTitle(id, e.currentTarget.value)
     setEditMode(false)
   }
 
