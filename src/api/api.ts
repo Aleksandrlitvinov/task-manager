@@ -1,7 +1,9 @@
 import axios from 'axios'
 
+export const baseURL = `https://social-network.samuraijs.com/api/1.1`
+
 export const instance = axios.create({
-  baseURL: `https://social-network.samuraijs.com/api/1.1`,
+  baseURL,
   headers: {
     'API-KEY': '74f116d6-eb90-4cd2-9a7c-af3f94273bd1',
   },
@@ -13,7 +15,7 @@ export enum ResponseResultCodeEnum {
   SUCCESS = 0,
 }
 
-export type ResponseApiType<T> = {
+export type ApiResponseType<T> = {
   data: T
   messages: string[]
   resultCode: ResponseResultCodeEnum

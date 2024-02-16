@@ -7,6 +7,7 @@ import {
 } from 'react-router-dom'
 
 import { Layout } from '@/components'
+import { useAppSelector } from '@/hooks'
 import { SignInPage, TodosPage } from '@/pages'
 
 const publicRoutes: RouteObject[] = [
@@ -41,7 +42,7 @@ export const Router = () => {
 }
 
 function PrivateRoutes() {
-  const isAuth: boolean = true
+  const isAuth = useAppSelector(state => state.auth.isAuth)
 
   return isAuth ? <Outlet /> : <Navigate to={'/sign-in'} />
 }
