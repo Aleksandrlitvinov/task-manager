@@ -1,7 +1,7 @@
 export {
   changeTodoTitle,
   createTodo,
-  getTodos,
+  fetchTodos,
   removeTodo,
   todosSliceReducer,
 } from './todoListsSlice'

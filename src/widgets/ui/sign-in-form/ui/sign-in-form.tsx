@@ -23,7 +23,7 @@ export const SignInForm = () => {
   const onHandleSubmit = async (data: loginFormValuesType) => {
     await dispatch(login(data))
       .unwrap()
-      .then(res => console.log(res.data.userId))
+      .then(res => res.data.userId)
       .catch(err => console.log(err))
   }
 

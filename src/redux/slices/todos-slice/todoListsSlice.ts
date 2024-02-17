@@ -24,10 +24,10 @@ const initialState: TodoListsType = {
 
 const todoListsSlice = createSlice({
   extraReducers: builder => {
-    builder.addCase(getTodos.pending, state => {
+    builder.addCase(fetchTodos.pending, state => {
       state.isLoading = true
     })
-    builder.addCase(getTodos.fulfilled, (state, action) => {
+    builder.addCase(fetchTodos.fulfilled, (state, action) => {
       state.todos = [...action.payload]
       state.isLoading = false
     })
@@ -50,7 +50,7 @@ const todoListsSlice = createSlice({
   reducers: {},
 })
 
-export const getTodos = createAsyncThunk(`getTodos`, async () => {
+export const fetchTodos = createAsyncThunk(`getTodos`, async () => {
   return await todosApi.getTodos()
 })
 export const createTodo = createAsyncThunk(`addTodo`, async (data: RequestTodosType) => {
