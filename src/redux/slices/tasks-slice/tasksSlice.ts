@@ -1,12 +1,6 @@
 import { TaskType } from '@/api'
+import { changeTodoTaskIsDone, createTaskForTodo, getTodoTasks, removeTodoTask } from '@/redux'
 import { createSlice } from '@reduxjs/toolkit'
-
-import {
-  changeTodoTaskIsDone,
-  createTaskForTodo,
-  getTodoTasks,
-  removeTodoTask,
-} from './tasksAsyncCreator'
 
 type TasksState = { [key: string]: TaskType[] }
 

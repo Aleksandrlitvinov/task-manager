@@ -1,22 +1,7 @@
 import { changeTodoTitle, createTodo, fetchTodos, removeTodo } from '@/redux'
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 
-export type FilterTasksType = 'active' | 'all' | 'completed'
-
-type TodoType = {
-  addedDate: string
-  id: string
-  order: number
-  title: string
-}
-
-type TodoListsType = {
-  currentPage: number
-  filter: FilterTasksType
-  isLoading: boolean
-  portion: number
-  todos: [] | TodoType[]
-}
+import { TodoListsType } from './todos-types'
 
 const initialState: TodoListsType = {
   currentPage: 1,
