@@ -1,5 +1,6 @@
-import { RequestLoginType, ResultCodeEnum, authApi } from '@/api'
-import { createAsyncThunk, createSlice, isAnyOf } from '@reduxjs/toolkit'
+import { ResultCodeEnum } from '@/api'
+import { login, logout, me } from '@/redux'
+import { createSlice, isAnyOf } from '@reduxjs/toolkit'
 
 type AuthType = {
   email: string
@@ -44,18 +45,6 @@ const authSlice = createSlice({
   initialState,
   name: 'auth',
   reducers: {},
-})
-
-export const login = createAsyncThunk(`login`, async (data: RequestLoginType) => {
-  return await authApi.login(data)
-})
-
-export const me = createAsyncThunk(`me`, async () => {
-  return await authApi.me()
-})
-
-export const logout = createAsyncThunk(`logout`, async () => {
-  return await authApi.logout()
 })
 
 export const authReducer = authSlice.reducer

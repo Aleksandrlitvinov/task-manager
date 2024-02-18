@@ -1,5 +1,5 @@
-import { RequestTodosType, RequestUpdateType, ResultCodeEnum, todosApi } from '@/api'
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { changeTodoTitle, createTodo, fetchTodos, removeTodo } from '@/redux'
+import { createSlice } from '@reduxjs/toolkit'
 
 export type FilterTasksType = 'active' | 'all' | 'completed'
 
@@ -49,29 +49,5 @@ const todoListsSlice = createSlice({
   name: 'todos',
   reducers: {},
 })
-
-export const fetchTodos = createAsyncThunk(`getTodos`, async () => {
-  return await todosApi.getTodos()
-})
-export const createTodo = createAsyncThunk(`addTodo`, async (data: RequestTodosType) => {
-  return await todosApi.createTodo({ title: data.title })
-})
-
-export const removeTodo = createAsyncThunk(`removeTodo`, async (todoId: string) => {
-  const data = await todosApi.removeTodo(todoId)
-
-  if (data.resultCode === ResultCodeEnum.SUCCESS) {
-    return todoId
-  }
-})
-
-export const changeTodoTitle = createAsyncThunk(
-  `changeTodoTitle`,
-  async ({ title, todoId }: RequestUpdateType) => {
-    await todosApi.updateTodoTitle({ title, todoId })
-
-    return { title, todoId }
-  }
-)
 
 export const todosSliceReducer = todoListsSlice.reducer
