@@ -3,5 +3,5 @@ export {
   createTaskForTodo,
   getTodoTasks,
   removeTodoTask,
-  tasksSliceReducer,
-} from './tasksSlice'
+} from './tasksAsyncCreator'
+export { tasksSliceReducer } from './tasksSlice'

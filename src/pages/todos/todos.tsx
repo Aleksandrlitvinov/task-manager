@@ -1,9 +1,9 @@
 import React, { ChangeEvent, useEffect, useState } from 'react'
 
 import { useAppDispatch, useAppSelector } from '@/hooks'
-import { RootStateType, createTodo, fetchTodos, removeTodo } from '@/redux'
+import { changePage, createTodo, fetchTodos, removeTodo } from '@/redux'
 import { AddItemForm, Todo } from '@/widgets'
-import { Grid, ThemeProvider } from '@mui/material'
+import { Grid, Pagination, ThemeProvider } from '@mui/material'
 
 import s from './todos.module.scss'
 
@@ -12,9 +12,17 @@ import { stylesTodos } from './todos.styles'
 export const TodosPage = () => {
   const [inputValue, setInputValue] = useState<string>('')
   const [error, setError] = useState<boolean>(false)
-  const todos = useAppSelector((state: RootStateType) => state.todoLists.todos)
+  const { currentPage, portion, todos } = useAppSelector(state => state.todoLists)
   const tasks = useAppSelector(state => state.tasksList)
   const dispatch = useAppDispatch()
+  const pagesCount = Math.ceil(todos.length / portion)
+
+  const todosPaginated = todos.slice((currentPage - 1) * portion, currentPage * portion)
+
+  const changeCurrentPage = (_: any, page: number) => {
+    dispatch(changePage(page))
+  }
+
   const onInputChangeValue = (e: ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.currentTarget.value)
   }
@@ -60,7 +68,7 @@ export const TodosPage = () => {
         />
         <ThemeProvider theme={stylesTodos}>
           <Grid container>
-            {todos.map(todo => (
+            {todosPaginated.map(todo => (
               <Grid item key={todo.id}>
                 <Todo
                   id={todo.id}
@@ -72,6 +80,14 @@ export const TodosPage = () => {
             ))}
           </Grid>
         </ThemeProvider>
+        <div className={s.pagination}>
+          <Pagination
+            color={'secondary'}
+            count={pagesCount}
+            onChange={changeCurrentPage}
+            page={currentPage}
+          />
+        </div>
       </main>
     </div>
   )

@@ -1,24 +1,13 @@
-import { RequestTodosType, RequestUpdateType, ResultCodeEnum, todosApi } from '@/api'
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { changeTodoTitle, createTodo, fetchTodos, removeTodo } from '@/redux'
+import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 
-export type FilterTasksType = 'active' | 'all' | 'completed'
-
-type TodoType = {
-  addedDate: string
-  id: string
-  order: number
-  title: string
-}
-
-type TodoListsType = {
-  filter: FilterTasksType
-  isLoading: boolean
-  todos: [] | TodoType[]
-}
+import { TodoListsType } from './todos-types'
 
 const initialState: TodoListsType = {
+  currentPage: 1,
   filter: 'all',
   isLoading: false,
+  portion: 6,
   todos: [],
 }
 
@@ -47,31 +36,12 @@ const todoListsSlice = createSlice({
   },
   initialState,
   name: 'todos',
-  reducers: {},
+  reducers: {
+    changePage: (state, action: PayloadAction<number>) => {
+      state.currentPage = action.payload
+    },
+  },
 })
 
-export const fetchTodos = createAsyncThunk(`getTodos`, async () => {
-  return await todosApi.getTodos()
-})
-export const createTodo = createAsyncThunk(`addTodo`, async (data: RequestTodosType) => {
-  return await todosApi.createTodo({ title: data.title })
-})
-
-export const removeTodo = createAsyncThunk(`removeTodo`, async (todoId: string) => {
-  const data = await todosApi.removeTodo(todoId)
-
-  if (data.resultCode === ResultCodeEnum.SUCCESS) {
-    return todoId
-  }
-})
-
-export const changeTodoTitle = createAsyncThunk(
-  `changeTodoTitle`,
-  async ({ title, todoId }: RequestUpdateType) => {
-    await todosApi.updateTodoTitle({ title, todoId })
-
-    return { title, todoId }
-  }
-)
-
+export const { changePage } = todoListsSlice.actions
 export const todosSliceReducer = todoListsSlice.reducer
