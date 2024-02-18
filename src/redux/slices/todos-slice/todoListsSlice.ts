@@ -1,5 +1,5 @@
 import { changeTodoTitle, createTodo, fetchTodos, removeTodo } from '@/redux'
-import { createSlice } from '@reduxjs/toolkit'
+import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 
 export type FilterTasksType = 'active' | 'all' | 'completed'
 
@@ -11,14 +11,18 @@ type TodoType = {
 }
 
 type TodoListsType = {
+  currentPage: number
   filter: FilterTasksType
   isLoading: boolean
+  portion: number
   todos: [] | TodoType[]
 }
 
 const initialState: TodoListsType = {
+  currentPage: 1,
   filter: 'all',
   isLoading: false,
+  portion: 6,
   todos: [],
 }
 
@@ -47,7 +51,12 @@ const todoListsSlice = createSlice({
   },
   initialState,
   name: 'todos',
-  reducers: {},
+  reducers: {
+    changePage: (state, action: PayloadAction<number>) => {
+      state.currentPage = action.payload
+    },
+  },
 })
 
+export const { changePage } = todoListsSlice.actions
 export const todosSliceReducer = todoListsSlice.reducer
