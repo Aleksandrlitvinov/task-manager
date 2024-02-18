@@ -1,8 +1,9 @@
-import React, { ChangeEvent, useState } from 'react'
+import React, { ChangeEvent, useEffect, useState } from 'react'
 
+import { TaskType } from '@/api'
 import { ModalRemove } from '@/components'
 import { useAppDispatch } from '@/hooks'
-import { addTask, createTasksList } from '@/redux/slices/tasks-slice/tasksSlice'
+import { createTaskForTodo, getTodoTasks } from '@/redux/slices/tasks-slice/tasksSlice'
 import { FilterTasksType, changeTodoTitle } from '@/redux/slices/todos-slice/todoListsSlice'
 import { AddItemForm, EditTitle, FilterTasks, TasksList } from '@/widgets'
 import ClearIcon from '@mui/icons-material/Clear'
@@ -13,12 +14,13 @@ import s from './todo.module.scss'
 type PropsTaskListType = {
   id: string
   removeTodo: (id: string) => void
+  tasks: TaskType[]
   title: string
 }
 
 export const Todo = (props: PropsTaskListType) => {
   const dispatch = useAppDispatch()
-  const { id, removeTodo, title } = props
+  const { id, removeTodo, tasks, title } = props
   const [filterTasks, setFilterTasks] = useState<FilterTasksType>('all')
   const [editMode, setEditMode] = useState<boolean>(false)
   const [inputValue, setInputValue] = useState<string>('')
@@ -30,8 +32,8 @@ export const Todo = (props: PropsTaskListType) => {
     if (taskTitle.trim() === '') {
       setError(true)
     } else {
-      dispatch(createTasksList({ todoId: id }))
-      dispatch(addTask({ newTaskTitle: taskTitle, todoId: id }))
+      //dispatch(createTasksList({ todoId: id }))
+      dispatch(createTaskForTodo({ title: taskTitle, todoId: id }))
     }
 
     setInputValue('')
@@ -59,6 +61,10 @@ export const Todo = (props: PropsTaskListType) => {
     await onChangeTitle(id, e.currentTarget.value)
     setEditMode(false)
   }
+
+  useEffect(() => {
+    dispatch(getTodoTasks(id))
+  }, [])
 
   return (
     <Paper elevation={5} style={{ borderRadius: '10px' }}>
@@ -96,7 +102,7 @@ export const Todo = (props: PropsTaskListType) => {
           stylesFor={'task'}
         />
         <div className={s.tasksList}>
-          <TasksList filter={filterTasks} todoId={id} />
+          <TasksList filter={filterTasks} tasks={tasks} />
         </div>
         <FilterTasks filter={filterTasks} onClickSetFilter={onClickSetFilterHandler} />
       </div>

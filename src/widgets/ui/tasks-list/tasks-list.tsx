@@ -1,38 +1,23 @@
-import { useAppSelector } from '@/hooks'
+import { TaskType } from '@/api'
 import { FilterTasksType } from '@/redux'
-import { TaskTypeDTO } from '@/types'
 import { Task } from '@/widgets'
 
 type TasksListProps = {
   filter: FilterTasksType
-  todoId: string
+  tasks: TaskType[]
 }
 
 export const TasksList = (props: TasksListProps) => {
-  const { filter, todoId } = props
-  const tasks = useAppSelector(state => state.tasksList.tasksForTodos)
+  const { filter, tasks } = props
 
-  let tasksForTodo = tasks[todoId]
+  let tasksForTodo = tasks
 
   if (filter === 'active') {
-    tasksForTodo = tasks[todoId].filter(t => !t.isCompleted)
+    tasksForTodo = tasks.filter(t => !t.status)
   }
   if (filter === 'completed') {
-    tasksForTodo = tasks[todoId].filter(t => t.isCompleted)
+    tasksForTodo = tasks.filter(t => t.status)
   }
 
-  return (
-    <div>
-      {tasksForTodo?.map((task: TaskTypeDTO) => (
-        <Task
-          id={task.id}
-          isCompleted={task.isCompleted}
-          key={task.id}
-          onChangeTitle={() => {}}
-          title={task.title}
-          todoId={todoId}
-        />
-      ))}
-    </div>
-  )
+  return <div>{tasksForTodo?.map((task: TaskType) => <Task item={task} key={task.id} />)}</div>
 }
