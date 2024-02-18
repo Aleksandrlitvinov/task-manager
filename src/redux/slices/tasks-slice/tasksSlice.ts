@@ -1,84 +1,78 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit'
-import { v4 as uuidv4 } from 'uuid'
+import { RequestUpdateType, ResultCodeEnum, TaskType, tasksApi } from '@/api'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
-export type TaskTypeDTO = {
-  addedDate?: string
-  id: string
-  isCompleted: boolean
-  order?: number
-  title: string
-}
-
-type TasksState = {
-  tasksForTodos: {
-    [todoId: string]: [] | TaskTypeDTO[]
-  }
-}
-
-const initialState: TasksState = {
-  tasksForTodos: {},
-}
+type TasksState = { [key: string]: TaskType[] }
 
 const tasksSlice = createSlice({
-  initialState,
-  name: 'tasks',
-  reducers: {
-    addTask: (state, action: PayloadAction<{ newTaskTitle: string; todoId: string }>) => {
-      const newTask = {
-        id: uuidv4(),
-        isCompleted: false,
-        title: action.payload.newTaskTitle,
-      }
+  extraReducers: builder => {
+    builder
+      .addCase(createTaskForTodo.fulfilled, (state, action) => {
+        if (action.payload) {
+          if (state[action.payload.todoListId]) {
+            state[action.payload.todoListId].push(action.payload)
+          }
+          if (!state[action.payload.todoListId]) {
+            state[action.payload.todoListId] = [action.payload]
+          }
+        }
+      })
+      .addCase(getTodoTasks.fulfilled, (state, action) => {
+        state[action.payload.todoListId] = action.payload.tasks
+      })
+      .addCase(removeTodoTask.fulfilled, (state, action) => {
+        state[action.payload.todoListId] = state[action.payload.todoListId].filter(
+          (task: TaskType) => task.id !== action.payload.taskId
+        )
+      })
+      .addCase(changeTodoTaskIsDone.fulfilled, (state, action) => {
+        if (action.payload) {
+          const currentTask = state[action.payload.todoListId].find(
+            (t: TaskType) => t.id === action.payload?.id
+          )
 
-      state.tasksForTodos[action.payload.todoId] = [
-        newTask,
-        ...state.tasksForTodos[action.payload.todoId],
-      ]
-    },
-    changeStatus: (
-      state,
-      action: PayloadAction<{ id: string; isDone: boolean; todoId: string }>
-    ) => {
-      const currentTask = state.tasksForTodos[action.payload.todoId].find(
-        t => t.id === action.payload.id
-      )
-
-      if (currentTask != null) {
-        currentTask.isCompleted = action.payload.isDone
-      }
-
-      state.tasksForTodos[action.payload.todoId] = [...state.tasksForTodos[action.payload.todoId]]
-    },
-    changeTaskTitle: (
-      state,
-      action: PayloadAction<{ newTaskTitle: string; taskId: string; todoId: string }>
-    ) => {
-      const currentTask = state.tasksForTodos[action.payload.todoId].find(
-        task => task.id === action.payload.taskId
-      )
-
-      if (currentTask) {
-        currentTask.title = action.payload.newTaskTitle
-      }
-
-      state.tasksForTodos[action.payload.todoId] = [...state.tasksForTodos[action.payload.todoId]]
-    },
-    createTasksList: (state, action: PayloadAction<{ todoId: string }>) => {
-      const newListForTodo = {
-        [action.payload.todoId]: [],
-      }
-
-      state.tasksForTodos = { ...newListForTodo, ...state.tasksForTodos }
-    },
-
-    removeTask: (state, action: PayloadAction<{ taskId: string; todoId: string }>) => {
-      state.tasksForTodos[action.payload.todoId] = state.tasksForTodos[
-        action.payload.todoId
-      ].filter((task: TaskTypeDTO) => task.id !== action.payload.taskId)
-    },
+          if (currentTask) {
+            currentTask.status = action.payload.status
+          }
+        }
+      })
   },
+  initialState: {} as TasksState,
+  name: 'tasks',
+  reducers: {},
 })
 
-export const { addTask, changeStatus, changeTaskTitle, createTasksList, removeTask } =
-  tasksSlice.actions
+export const getTodoTasks = createAsyncThunk(`getTasksForTodo`, async (todoListId: string) => {
+  const data = await tasksApi.getTasksForTodo(todoListId)
+
+  return { tasks: data.items, todoListId }
+})
+
+export const createTaskForTodo = createAsyncThunk(
+  `addTask`,
+  async ({ title, todoId }: RequestUpdateType) => {
+    const data = await tasksApi.createNewTask({ title: title, todoId: todoId })
+
+    if (data.resultCode === ResultCodeEnum.SUCCESS) {
+      return data.data.item
+    }
+  }
+)
+export const removeTodoTask = createAsyncThunk(
+  `removeTodoTask`,
+  async ({ taskId, todoListId }: { taskId: string; todoListId: string }) => {
+    await tasksApi.removeCurrentTask(taskId, todoListId)
+
+    return { taskId, todoListId }
+  }
+)
+export const changeTodoTaskIsDone = createAsyncThunk(
+  `changeIsDone`,
+  async ({ task, taskId, todoListId }: { task: TaskType; taskId: string; todoListId: string }) => {
+    const data = await tasksApi.updateTask(taskId, todoListId, task)
+
+    if (data.resultCode === ResultCodeEnum.SUCCESS) {
+      return data.data.item
+    }
+  }
+)
 export const tasksSliceReducer = tasksSlice.reducer

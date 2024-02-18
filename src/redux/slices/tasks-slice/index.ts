@@ -1,9 +1,7 @@
 export {
-  addTask,
-  changeStatus,
-  changeTaskTitle,
-  createTasksList,
-  removeTask,
+  changeTodoTaskIsDone,
+  createTaskForTodo,
+  getTodoTasks,
+  removeTodoTask,
   tasksSliceReducer,
 } from './tasksSlice'
-export type { TaskTypeDTO } from './tasksSlice'

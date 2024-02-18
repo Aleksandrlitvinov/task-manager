@@ -1,9 +1,9 @@
 import { ChangeEvent, useState } from 'react'
 
+import { ResponseTaskType, TaskStatusEnum, TaskType } from '@/api'
 import { ModalRemove } from '@/components'
 import { useAppDispatch } from '@/hooks'
-import { changeStatus, changeTaskTitle, removeTask } from '@/redux'
-import { TaskTypeDTO } from '@/types'
+import { changeTodoTaskIsDone, getTodoTasks, removeTodoTask } from '@/redux'
 import { EditTitle } from '@/widgets'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 import EditIcon from '@mui/icons-material/Edit'
@@ -12,49 +12,61 @@ import clsx from 'clsx'
 
 import s from './task.module.scss'
 
-type TestProps = {
-  onChangeTitle: (id: string, newTitle: string) => void
-  todoId: string
-}
-export const Task = (props: TaskTypeDTO & TestProps) => {
-  const { id, isCompleted, onChangeTitle, title, todoId, ...rest } = props
+export const Task = (props: ResponseTaskType) => {
+  const { item: task } = props
   const [editMode, setEditMode] = useState<boolean>(false)
   const [showModal, setShowModal] = useState<boolean>(false)
   const dispatch = useAppDispatch()
-  const onChangeStatusHandler = (isDone: boolean) => {
-    dispatch(changeStatus({ id, isDone, todoId }))
+
+  const onChangeStatusHandler = async (e: ChangeEvent<HTMLInputElement>) => {
+    const newStatus = e.currentTarget.checked ? TaskStatusEnum.COMPLETED : TaskStatusEnum.PROGRESS
+    const updatedTask: TaskType = {
+      ...task,
+      status: newStatus,
+    }
+
+    await dispatch(
+      changeTodoTaskIsDone({ task: updatedTask, taskId: task.id, todoListId: task.todoListId })
+    )
+
+    dispatch(getTodoTasks(task.todoListId))
   }
 
   const onEditModeHandler = () => {
     setEditMode(true)
   }
 
-  const onViewMode = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const onViewMode = async (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const newTitle = e.currentTarget.value
+    const updatedTask: TaskType = {
+      ...task,
+      title: newTitle,
+    }
 
-    dispatch(changeTaskTitle({ newTaskTitle: newTitle, taskId: id, todoId: todoId }))
-    //onChangeTitle(id, e.currentTarget.value)
+    await dispatch(
+      changeTodoTaskIsDone({ task: updatedTask, taskId: task.id, todoListId: task.todoListId })
+    )
+    dispatch(getTodoTasks(task.todoListId))
     setEditMode(false)
   }
 
   const deleteTask = (taskId: string) => {
-    dispatch(removeTask({ taskId: taskId, todoId: todoId }))
+    dispatch(removeTodoTask({ taskId: taskId, todoListId: task.todoListId }))
   }
 
   return (
-    <div className={clsx(s.task, isCompleted && s.isDone)}>
+    <div className={clsx(s.task, task.status && s.isDone)}>
       <div className={s.taskTitle}>
         <Checkbox
-          checked={isCompleted}
+          checked={!!task.status}
           color={'success'}
-          onChange={() => onChangeStatusHandler(!isCompleted)}
-          {...rest}
+          onChange={e => onChangeStatusHandler(e)}
         />
         <EditTitle
           editMode={editMode}
           label={'edit'}
           onViewMode={onViewMode}
-          taskTitle={title}
+          taskTitle={task.title}
           textVariant={'h2'}
         />
       </div>
@@ -73,10 +85,10 @@ export const Task = (props: TaskTypeDTO & TestProps) => {
       </div>
       <ModalRemove
         handleClose={() => setShowModal(false)}
-        id={id}
+        id={task.id}
         open={showModal}
         removeItem={deleteTask}
-        title={title}
+        title={task.title}
       />
     </div>
   )

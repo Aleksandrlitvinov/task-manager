@@ -1,7 +1,7 @@
-import React, { ChangeEvent, useState } from 'react'
+import React, { ChangeEvent, useEffect, useState } from 'react'
 
 import { useAppDispatch, useAppSelector } from '@/hooks'
-import { RootStateType, createTodo, removeTodo } from '@/redux'
+import { RootStateType, createTodo, fetchTodos, removeTodo } from '@/redux'
 import { AddItemForm, Todo } from '@/widgets'
 import { Grid, ThemeProvider } from '@mui/material'
 
@@ -13,6 +13,7 @@ export const TodosPage = () => {
   const [inputValue, setInputValue] = useState<string>('')
   const [error, setError] = useState<boolean>(false)
   const todos = useAppSelector((state: RootStateType) => state.todoLists.todos)
+  const tasks = useAppSelector(state => state.tasksList)
   const dispatch = useAppDispatch()
   const onInputChangeValue = (e: ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.currentTarget.value)
@@ -36,6 +37,14 @@ export const TodosPage = () => {
     await dispatch(removeTodo(id))
   }
 
+  const getAllTasks = async () => {
+    await dispatch(fetchTodos())
+  }
+
+  useEffect(() => {
+    getAllTasks()
+  }, [])
+
   return (
     <div>
       <main className={s.content}>
@@ -53,7 +62,12 @@ export const TodosPage = () => {
           <Grid container>
             {todos.map(todo => (
               <Grid item key={todo.id}>
-                <Todo id={todo.id} removeTodo={removeTodoList} title={todo.title} />
+                <Todo
+                  id={todo.id}
+                  removeTodo={removeTodoList}
+                  tasks={tasks[todo.id]}
+                  title={todo.title}
+                />
               </Grid>
             ))}
           </Grid>
