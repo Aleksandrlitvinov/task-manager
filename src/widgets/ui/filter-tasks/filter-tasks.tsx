@@ -1,5 +1,5 @@
 import { FilterTasksType } from '@/redux'
-import { stylesBtnFilter } from '@/shared'
+import { stylesBtnFilter } from '@/styles'
 import { Button, ButtonGroup, ThemeProvider } from '@mui/material'
 
 const buttons = [{ title: 'all' }, { title: 'active' }, { title: 'completed' }]
