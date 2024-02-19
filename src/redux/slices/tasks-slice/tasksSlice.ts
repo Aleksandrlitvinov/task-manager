@@ -10,7 +10,7 @@ const tasksSlice = createSlice({
       .addCase(createTaskForTodo.fulfilled, (state, action) => {
         if (action.payload) {
           if (state[action.payload.todoListId]) {
-            state[action.payload.todoListId].push(action.payload)
+            state[action.payload.todoListId] = [action.payload, ...state[action.payload.todoListId]]
           }
           if (!state[action.payload.todoListId]) {
             state[action.payload.todoListId] = [action.payload]

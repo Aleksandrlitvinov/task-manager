@@ -1,6 +1,7 @@
 import React, { ChangeEvent } from 'react'
 
-import { Input, stylesAddItemForm, stylesBtnTask, stylesBtnTodo } from '@/components'
+import { Input } from '@/shared'
+import { stylesAddItemForm, stylesBtnTask, stylesBtnTodo } from '@/styles'
 import AddIcon from '@mui/icons-material/Add'
 import { Button, ThemeProvider } from '@mui/material'
 

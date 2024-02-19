@@ -6,7 +6,7 @@ export const stylesTodos = createTheme({
         container: {
           display: 'grid',
           gap: '20px',
-          gridTemplateColumns: '1fr 1fr 1fr',
+          gridTemplateColumns: '1fr 1fr',
           padding: '0 10px',
         },
       },
