@@ -1,6 +1,6 @@
 import { ChangeEvent, useState } from 'react'
 
-import { TextVariantType, Typography } from '@/components'
+import { TextVariantType, Typography } from '@/shared'
 import { TextField } from '@mui/material'
 
 type EditTitlePropsType = {

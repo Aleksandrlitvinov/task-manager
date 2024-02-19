@@ -6,9 +6,9 @@ import {
   createBrowserRouter,
 } from 'react-router-dom'
 
-import { Layout } from '@/components'
 import { useAppSelector } from '@/hooks'
 import { SignInPage, TodosPage } from '@/pages'
+import { Layout } from '@/shared'
 
 const publicRoutes: RouteObject[] = [
   {

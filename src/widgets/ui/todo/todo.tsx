@@ -1,9 +1,9 @@
 import React, { ChangeEvent, useEffect, useState } from 'react'
 
 import { TaskType } from '@/api'
-import { ModalRemove } from '@/components'
 import { useAppDispatch } from '@/hooks'
 import { FilterTasksType, changeTodoTitle, createTaskForTodo, getTodoTasks } from '@/redux'
+import { ModalRemove } from '@/shared'
 import { AddItemForm, EditTitle, FilterTasks, TasksList } from '@/widgets'
 import ClearIcon from '@mui/icons-material/Clear'
 import { Fab, Paper } from '@mui/material'
@@ -31,7 +31,6 @@ export const Todo = (props: PropsTaskListType) => {
     if (taskTitle.trim() === '') {
       setError(true)
     } else {
-      //dispatch(createTasksList({ todoId: id }))
       dispatch(createTaskForTodo({ title: taskTitle, todoId: id }))
     }
 
@@ -63,7 +62,7 @@ export const Todo = (props: PropsTaskListType) => {
 
   useEffect(() => {
     dispatch(getTodoTasks(id))
-  }, [])
+  }, [dispatch, id])
 
   return (
     <Paper elevation={5} style={{ borderRadius: '10px' }}>
