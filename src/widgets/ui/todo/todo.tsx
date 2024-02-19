@@ -6,7 +6,7 @@ import { FilterTasksType, changeTodoTitle, createTaskForTodo, getTodoTasks } fro
 import { ModalRemove } from '@/shared'
 import { AddItemForm, EditTitle, FilterTasks, TasksList } from '@/widgets'
 import ClearIcon from '@mui/icons-material/Clear'
-import { Fab, Paper } from '@mui/material'
+import { Fab, Paper, Tooltip } from '@mui/material'
 
 import s from './todo.module.scss'
 
@@ -79,16 +79,18 @@ export const Todo = (props: PropsTaskListType) => {
           removeItem={removeTodo}
           title={title}
         />
-        <div className={s.tasksListTitle}>
-          <EditTitle
-            editMode={editMode}
-            label={'edit'}
-            onEditMode={onEditModeHandler}
-            onViewMode={onViewMode}
-            taskTitle={title}
-            textVariant={'h2'}
-          />
-        </div>
+        <Tooltip placement={'top-start'} title={'double-click to edit'}>
+          <div className={s.tasksListTitle}>
+            <EditTitle
+              editMode={editMode}
+              label={'edit'}
+              onEditMode={onEditModeHandler}
+              onViewMode={onViewMode}
+              taskTitle={title}
+              textVariant={'h2'}
+            />
+          </div>
+        </Tooltip>
         <AddItemForm
           addItem={addNewTask}
           className={s.form}

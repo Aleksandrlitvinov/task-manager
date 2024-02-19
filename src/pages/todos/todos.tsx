@@ -67,28 +67,34 @@ export const TodosPage = () => {
       />
       <div className={s.todos}>
         <ThemeProvider theme={stylesTodos}>
-          <Grid container>
-            {todosPaginated.map(todo => (
-              <Grid item key={todo.id}>
-                <Todo
-                  id={todo.id}
-                  removeTodo={removeTodoList}
-                  tasks={tasks[todo.id]}
-                  title={todo.title}
-                />
-              </Grid>
-            ))}
-          </Grid>
+          {!todos.length ? (
+            <div> You do not have any todos yet! Add your first TodoList</div>
+          ) : (
+            <Grid container>
+              {todosPaginated.map(todo => (
+                <Grid item key={todo.id}>
+                  <Todo
+                    id={todo.id}
+                    removeTodo={removeTodoList}
+                    tasks={tasks[todo.id]}
+                    title={todo.title}
+                  />
+                </Grid>
+              ))}
+            </Grid>
+          )}
         </ThemeProvider>
       </div>
-      <div className={s.pagination}>
-        <Pagination
-          color={'secondary'}
-          count={pagesCount}
-          onChange={changeCurrentPage}
-          page={currentPage}
-        />
-      </div>
+      {todos.length > 4 && (
+        <div className={s.pagination}>
+          <Pagination
+            color={'secondary'}
+            count={pagesCount}
+            onChange={changeCurrentPage}
+            page={currentPage}
+          />
+        </div>
+      )}
     </div>
   )
 }
