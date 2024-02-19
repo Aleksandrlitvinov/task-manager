@@ -1,3 +1,13 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 104px);
+
+  .todos{
+    flex-grow: 1;
+  }
+}
+
 .button {
   height: 36px;
 }

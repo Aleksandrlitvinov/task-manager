@@ -7,7 +7,7 @@ import { ModalRemove } from '@/shared'
 import { EditTitle } from '@/widgets'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 import EditIcon from '@mui/icons-material/Edit'
-import { Checkbox, Fab } from '@mui/material'
+import { Checkbox, Fab, Tooltip } from '@mui/material'
 import clsx from 'clsx'
 
 import s from './task.module.scss'
@@ -71,17 +71,16 @@ export const Task = (props: ResponseTaskType) => {
         />
       </div>
       <div className={s.icons}>
-        <Fab className={s.icon} color={'inherit'} onClick={onEditModeHandler}>
-          <EditIcon />
-        </Fab>
-        <Fab
-          aria-label={'delete'}
-          className={s.icon}
-          color={'inherit'}
-          onClick={() => setShowModal(true)}
-        >
-          <DeleteForeverIcon />
-        </Fab>
+        <Tooltip placement={'top'} title={'Edit'}>
+          <Fab className={s.icon} color={'inherit'} onClick={onEditModeHandler}>
+            <EditIcon />
+          </Fab>
+        </Tooltip>
+        <Tooltip placement={'top'} title={'Delete'}>
+          <Fab className={s.icon} color={'inherit'} onClick={() => setShowModal(true)}>
+            <DeleteForeverIcon />
+          </Fab>
+        </Tooltip>
       </div>
       <ModalRemove
         handleClose={() => setShowModal(false)}

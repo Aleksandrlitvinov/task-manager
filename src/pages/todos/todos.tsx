@@ -54,18 +54,18 @@ export const TodosPage = () => {
   }, [])
 
   return (
-    <div>
-      <main className={s.content}>
-        <AddItemForm
-          addItem={addTodo}
-          className={s.form}
-          error={error}
-          inputValue={inputValue}
-          onChangeHandler={onInputChangeValue}
-          onValueChangeHandler={onValueChangeHandler}
-          placeholder={'Add todo title'}
-          stylesFor={'todo'}
-        />
+    <div className={s.content}>
+      <AddItemForm
+        addItem={addTodo}
+        className={s.form}
+        error={error}
+        inputValue={inputValue}
+        onChangeHandler={onInputChangeValue}
+        onValueChangeHandler={onValueChangeHandler}
+        placeholder={'Add todo title'}
+        stylesFor={'todo'}
+      />
+      <div className={s.todos}>
         <ThemeProvider theme={stylesTodos}>
           <Grid container>
             {todosPaginated.map(todo => (
@@ -80,15 +80,15 @@ export const TodosPage = () => {
             ))}
           </Grid>
         </ThemeProvider>
-        <div className={s.pagination}>
-          <Pagination
-            color={'secondary'}
-            count={pagesCount}
-            onChange={changeCurrentPage}
-            page={currentPage}
-          />
-        </div>
-      </main>
+      </div>
+      <div className={s.pagination}>
+        <Pagination
+          color={'secondary'}
+          count={pagesCount}
+          onChange={changeCurrentPage}
+          page={currentPage}
+        />
+      </div>
     </div>
   )
 }

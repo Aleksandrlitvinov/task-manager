@@ -7,7 +7,7 @@ const initialState: TodoListsType = {
   currentPage: 1,
   filter: 'all',
   isLoading: false,
-  portion: 6,
+  portion: 4,
   todos: [],
 }
 
