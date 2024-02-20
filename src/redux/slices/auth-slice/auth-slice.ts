@@ -5,13 +5,13 @@ import { createSlice, isAnyOf } from '@reduxjs/toolkit'
 type AuthType = {
   isAuth: boolean
   isLoading: boolean
-  login: string
+  login: null | string
 }
 
 const initialState: AuthType = {
   isAuth: false,
   isLoading: false,
-  login: '',
+  login: null,
 }
 const authSlice = createSlice({
   extraReducers: builder => {
@@ -26,12 +26,14 @@ const authSlice = createSlice({
         if (action.payload) {
           state.isAuth = true
           state.login = action.payload.login
+          state.isLoading = false
         }
       })
       .addCase(logout.fulfilled, (state, action) => {
         if (action.payload.resultCode === ResultCodeEnum.SUCCESS) {
           state.isAuth = false
           state.isLoading = false
+          state.login = null
         }
       })
       .addMatcher(isAnyOf(login.pending, logout.pending, me.pending), state => {

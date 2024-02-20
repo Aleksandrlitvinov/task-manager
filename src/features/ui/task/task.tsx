@@ -1,10 +1,10 @@
 import { ChangeEvent, useState } from 'react'
 
 import { ResponseTaskType, TaskStatusEnum, TaskType } from '@/api'
+import { EditTitle } from '@/features'
 import { useAppDispatch } from '@/hooks'
 import { changeTodoTaskIsDone, getTodoTasks, removeTodoTask } from '@/redux'
 import { ModalRemove } from '@/shared'
-import { EditTitle } from '@/widgets'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 import EditIcon from '@mui/icons-material/Edit'
 import { Checkbox, Fab, Tooltip } from '@mui/material'

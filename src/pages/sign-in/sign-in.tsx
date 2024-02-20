@@ -1,24 +1,19 @@
 import { useEffect } from 'react'
 import { Navigate } from 'react-router-dom'
 
+import { SignInForm } from '@/features'
 import { useAppDispatch, useAppSelector } from '@/hooks'
 import { me } from '@/redux'
-import { SignInForm } from '@/widgets'
 
 import s from './sign-in.module.scss'
 
 export const SignInPage = () => {
   const dispatch = useAppDispatch()
-
-  const isLogin = async () => {
-    await dispatch(me())
-  }
+  const isAuth = useAppSelector(state => state.auth.isAuth)
 
   useEffect(() => {
-    void isLogin()
+    dispatch(me())
   }, [dispatch])
-
-  const isAuth = useAppSelector(state => state.auth.isAuth)
 
   if (isAuth) {
     return <Navigate replace to={'/'} />

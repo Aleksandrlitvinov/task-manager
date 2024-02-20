@@ -1,10 +1,10 @@
 import React, { ChangeEvent, useEffect, useState } from 'react'
 
 import { TaskType } from '@/api'
+import { AddItemForm, EditTitle, FilterTasks, TasksList } from '@/features'
 import { useAppDispatch } from '@/hooks'
 import { FilterTasksType, changeTodoTitle, createTaskForTodo, getTodoTasks } from '@/redux'
 import { ModalRemove } from '@/shared'
-import { AddItemForm, EditTitle, FilterTasks, TasksList } from '@/widgets'
 import ClearIcon from '@mui/icons-material/Clear'
 import { Fab, Paper, Tooltip } from '@mui/material'
 
