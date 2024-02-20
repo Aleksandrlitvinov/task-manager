@@ -1,8 +1,8 @@
 import React, { ChangeEvent, useEffect, useState } from 'react'
 
+import { AddItemForm, Todo } from '@/features'
 import { useAppDispatch, useAppSelector } from '@/hooks'
 import { changePage, createTodo, fetchTodos, me, removeTodo } from '@/redux'
-import { AddItemForm, Todo } from '@/widgets'
 import { CircularProgress, Grid, Pagination, ThemeProvider } from '@mui/material'
 
 import s from './todos.module.scss'
@@ -50,16 +50,12 @@ export const TodosPage = () => {
     await dispatch(fetchTodos())
   }
 
-  const isLogin = async () => {
-    await dispatch(me())
-  }
-
   useEffect(() => {
     getAllTasks()
   }, [])
 
   useEffect(() => {
-    void isLogin()
+    dispatch(me())
   }, [dispatch])
 
   return (

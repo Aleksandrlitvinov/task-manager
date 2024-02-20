@@ -1,6 +1,6 @@
 import { TaskType } from '@/api'
+import { Task } from '@/features'
 import { FilterTasksType } from '@/redux'
-import { Task } from '@/widgets'
 
 type TasksListProps = {
   filter: FilterTasksType

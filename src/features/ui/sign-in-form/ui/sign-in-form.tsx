@@ -1,10 +1,10 @@
 import { Controller, FormProvider, useForm } from 'react-hook-form'
 
+import { loginFormValuesType, loginSchema } from '@/features'
 import { useAppDispatch } from '@/hooks'
 import { login } from '@/redux'
 import { Input } from '@/shared'
 import { stylesAddItemForm, stylesBtnTask } from '@/styles'
-import { loginFormValuesType, loginSchema } from '@/widgets'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button, Checkbox, FormControlLabel, FormGroup, ThemeProvider } from '@mui/material'
 
