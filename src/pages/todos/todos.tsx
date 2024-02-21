@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from 'react'
+import { useEffect } from 'react'
 
 import { AddItemForm, TodosList, TodosPagination } from '@/features'
 import { useAppDispatch, useAppSelector } from '@/hooks'
@@ -10,28 +10,10 @@ import s from './todos.module.scss'
 import { stylesTodos } from './todos.styles'
 
 export const TodosPage = () => {
-  const [inputValue, setInputValue] = useState<string>('')
-  const [error, setError] = useState<boolean>(false)
   const isLoading = useAppSelector(state => state.auth.isLoading)
   const dispatch = useAppDispatch()
-
-  const onInputChangeValue = (e: ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.currentTarget.value)
-  }
-
-  const onValueChangeHandler = (todoTitle: string) => {
-    setError(false)
-    setInputValue(todoTitle)
-  }
-
-  const addTodo = async (e: React.FormEvent<HTMLFormElement>, todoTitle: string) => {
-    e.preventDefault()
-    if (todoTitle.trim() === '') {
-      setError(true)
-    } else {
-      await dispatch(createTodo({ title: todoTitle }))
-      setInputValue('')
-    }
+  const addTodo = async (todoTitle: string) => {
+    await dispatch(createTodo({ title: todoTitle }))
   }
 
   useEffect(() => {
@@ -42,12 +24,8 @@ export const TodosPage = () => {
     <div>
       <div className={s.content}>
         <AddItemForm
-          addItem={addTodo}
+          callback={addTodo}
           className={s.form}
-          error={error}
-          inputValue={inputValue}
-          onChangeHandler={onInputChangeValue}
-          onValueChangeHandler={onValueChangeHandler}
           placeholder={'Add todo title'}
           stylesFor={'todo'}
         />

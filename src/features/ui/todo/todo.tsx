@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useCallback, useEffect, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 
 import { TaskType } from '@/api'
 import { AddItemForm, EditTitle, FilterTasks, TasksList } from '@/features'
@@ -22,30 +22,10 @@ export const Todo = (props: PropsTaskListType) => {
   const { id, removeTodo, tasks, title } = props
   const [filterTasks, setFilterTasks] = useState<FilterTasksType>('all')
   const [editMode, setEditMode] = useState<boolean>(false)
-  const [inputValue, setInputValue] = useState<string>('')
-  const [error, setError] = useState<boolean>(false)
   const [showModal, setShowModal] = useState<boolean>(false)
 
-  const addNewTask = useCallback(
-    (e: React.FormEvent<HTMLFormElement>, taskTitle: string) => {
-      e.preventDefault()
-      if (taskTitle.trim() === '') {
-        setError(true)
-      } else {
-        dispatch(createTaskForTodo({ title: taskTitle, todoId: id }))
-      }
-
-      setInputValue('')
-    },
-    [dispatch, id]
-  )
-  const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.currentTarget.value)
-  }
-
-  const onValueChangeHandler = (taskTitle: string) => {
-    setError(false)
-    setInputValue(taskTitle)
+  const addNewTask = (taskTitle: string) => {
+    dispatch(createTaskForTodo({ title: taskTitle, todoId: id }))
   }
   const onClickSetFilterHandler = (value: string) => {
     const currentFilter = value.trim()
@@ -95,13 +75,9 @@ export const Todo = (props: PropsTaskListType) => {
           </div>
         </Tooltip>
         <AddItemForm
-          addItem={addNewTask}
+          callback={addNewTask}
           className={s.form}
-          error={error}
-          inputValue={inputValue}
-          onChangeHandler={onChangeHandler}
-          onValueChangeHandler={onValueChangeHandler}
-          placeholder={'Add task title'}
+          placeholder={'task title'}
           stylesFor={'task'}
         />
         <div className={s.tasksList}>
