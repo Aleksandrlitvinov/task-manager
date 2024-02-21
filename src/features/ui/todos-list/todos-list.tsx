@@ -1,23 +1,26 @@
+import { useEffect } from 'react'
+
 import { Todo } from '@/features'
 import { useAppDispatch, useAppSelector } from '@/hooks'
-import { removeTodo } from '@/redux'
-import { TodoType } from '@/redux/slices/todos-slice/todos-types'
+import { fetchTodos, removeTodo } from '@/redux'
 import { Grid } from '@mui/material'
 
-type TodosListType = {
-  currentPage: number
-  portion: number
-  todos: [] | TodoType[]
-}
-
-export const TodosList = (props: TodosListType) => {
-  const { currentPage, portion, todos } = props
+export const TodosList = () => {
+  const { currentPage, portion, todos } = useAppSelector(state => state.todoLists)
   const dispatch = useAppDispatch()
   const tasks = useAppSelector(state => state.tasksList)
   const todosPerPage = todos.slice((currentPage - 1) * portion, currentPage * portion)
 
   const removeTodoList = async (id: string) => {
     await dispatch(removeTodo(id))
+  }
+
+  useEffect(() => {
+    dispatch(fetchTodos())
+  }, [dispatch])
+
+  if (!todos.length) {
+    return <div> You do not have any todos yet! Add your first TodoList</div>
   }
 
   return (
