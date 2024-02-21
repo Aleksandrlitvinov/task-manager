@@ -7,10 +7,12 @@ export type TodoType = {
   title: string
 }
 
+export type TodosType = [] | TodoType[]
+
 export type TodoListsType = {
   currentPage: number
   filter: FilterTasksType
   isLoading: boolean
   portion: number
-  todos: [] | TodoType[]
+  todos: TodosType
 }

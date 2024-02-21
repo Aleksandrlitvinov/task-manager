@@ -71,7 +71,9 @@ export const TodosPage = () => {
             </ThemeProvider>
           )}
         </div>
-        {todos.length > 4 && <TodosPagination />}
+        {todos.length > 4 && (
+          <TodosPagination currentPage={currentPage} portion={portion} todos={todos} />
+        )}
       </div>
     </div>
   )

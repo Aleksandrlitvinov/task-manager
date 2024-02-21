@@ -1,12 +1,22 @@
-import { useAppDispatch, useAppSelector } from '@/hooks'
+import { useAppDispatch } from '@/hooks'
 import { changePage } from '@/redux'
+import { TodosType } from '@/redux/slices/todos-slice/todos-types'
 import { Pagination } from '@mui/material'
 
 import s from './pagination.module.scss'
 
-export const TodosPagination = () => {
+type PaginationPropsType<T> = {
+  currentPage: number
+  portion: number
+  todos: T
+}
+
+export const TodosPagination = ({
+  currentPage,
+  portion,
+  todos,
+}: PaginationPropsType<TodosType>) => {
   const dispatch = useAppDispatch()
-  const { currentPage, portion, todos } = useAppSelector(state => state.todoLists)
   const pagesCount = Math.ceil(todos.length / portion)
 
   const changeCurrentPage = (_: any, page: number) => {

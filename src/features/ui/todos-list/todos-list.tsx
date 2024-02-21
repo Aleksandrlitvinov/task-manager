@@ -14,7 +14,7 @@ export const TodosList = (props: TodosListType) => {
   const { currentPage, portion, todos } = props
   const dispatch = useAppDispatch()
   const tasks = useAppSelector(state => state.tasksList)
-  const todosPaginated = todos.slice((currentPage - 1) * portion, currentPage * portion)
+  const todosPerPage = todos.slice((currentPage - 1) * portion, currentPage * portion)
 
   const removeTodoList = async (id: string) => {
     await dispatch(removeTodo(id))
@@ -22,7 +22,7 @@ export const TodosList = (props: TodosListType) => {
 
   return (
     <Grid container>
-      {todosPaginated.map(todo => (
+      {todosPerPage.map(todo => (
         <Grid item key={todo.id}>
           <Todo
             id={todo.id}

@@ -3,7 +3,7 @@ import { ChangeEvent, useState } from 'react'
 import { ResponseTaskType, TaskStatusEnum, TaskType } from '@/api'
 import { EditTitle } from '@/features'
 import { useAppDispatch } from '@/hooks'
-import { changeTodoTaskIsDone, getTodoTasks, removeTodoTask } from '@/redux'
+import { getTodoTasks, removeTodoTask, updateTodoTask } from '@/redux'
 import { ModalRemove } from '@/shared'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 import EditIcon from '@mui/icons-material/Edit'
@@ -18,38 +18,41 @@ export const Task = (props: ResponseTaskType) => {
   const [showModal, setShowModal] = useState<boolean>(false)
   const dispatch = useAppDispatch()
 
-  const onChangeStatusHandler = async (e: ChangeEvent<HTMLInputElement>) => {
+  const getUpdatedTask = async (updatedTask: TaskType) => {
+    await dispatch(
+      updateTodoTask({ task: updatedTask, taskId: task.id, todoListId: task.todoListId })
+    )
+    dispatch(getTodoTasks(task.todoListId))
+  }
+
+  const onUpdateStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const newStatus = e.currentTarget.checked ? TaskStatusEnum.COMPLETED : TaskStatusEnum.PROGRESS
     const updatedTask: TaskType = {
       ...task,
       status: newStatus,
     }
 
-    await dispatch(
-      changeTodoTaskIsDone({ task: updatedTask, taskId: task.id, todoListId: task.todoListId })
-    )
-
-    dispatch(getTodoTasks(task.todoListId))
+    void getUpdatedTask(updatedTask)
   }
 
-  const onEditModeHandler = () => {
-    setEditMode(true)
-  }
-
-  const onViewMode = async (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const onUpdateTitleHandler = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const newTitle = e.currentTarget.value
-    const updatedTask: TaskType = {
+
+    return {
       ...task,
       title: newTitle,
     }
-
-    await dispatch(
-      changeTodoTaskIsDone({ task: updatedTask, taskId: task.id, todoListId: task.todoListId })
-    )
-    dispatch(getTodoTasks(task.todoListId))
-    setEditMode(false)
   }
 
+  const onViewMode = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const updatedTask = onUpdateTitleHandler(e)
+
+    void getUpdatedTask(updatedTask)
+    setEditMode(false)
+  }
+  const onEditModeHandler = () => {
+    setEditMode(true)
+  }
   const deleteTask = (taskId: string) => {
     dispatch(removeTodoTask({ taskId: taskId, todoListId: task.todoListId }))
   }
@@ -60,7 +63,7 @@ export const Task = (props: ResponseTaskType) => {
         <Checkbox
           checked={!!task.status}
           color={'success'}
-          onChange={e => onChangeStatusHandler(e)}
+          onChange={e => onUpdateStatusHandler(e)}
         />
         <EditTitle
           editMode={editMode}

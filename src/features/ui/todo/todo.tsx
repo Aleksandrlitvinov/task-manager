@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from 'react'
+import React, { ChangeEvent, useCallback, useEffect, useState } from 'react'
 
 import { TaskType } from '@/api'
 import { AddItemForm, EditTitle, FilterTasks, TasksList } from '@/features'
@@ -26,16 +26,19 @@ export const Todo = (props: PropsTaskListType) => {
   const [error, setError] = useState<boolean>(false)
   const [showModal, setShowModal] = useState<boolean>(false)
 
-  const addNewTask = (e: React.FormEvent<HTMLFormElement>, taskTitle: string) => {
-    e.preventDefault()
-    if (taskTitle.trim() === '') {
-      setError(true)
-    } else {
-      dispatch(createTaskForTodo({ title: taskTitle, todoId: id }))
-    }
+  const addNewTask = useCallback(
+    (e: React.FormEvent<HTMLFormElement>, taskTitle: string) => {
+      e.preventDefault()
+      if (taskTitle.trim() === '') {
+        setError(true)
+      } else {
+        dispatch(createTaskForTodo({ title: taskTitle, todoId: id }))
+      }
 
-    setInputValue('')
-  }
+      setInputValue('')
+    },
+    [dispatch, id]
+  )
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.currentTarget.value)
   }

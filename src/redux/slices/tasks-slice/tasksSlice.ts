@@ -1,5 +1,5 @@
 import { TaskType } from '@/api'
-import { changeTodoTaskIsDone, createTaskForTodo, getTodoTasks, removeTodoTask } from '@/redux'
+import { createTaskForTodo, getTodoTasks, removeTodoTask, updateTodoTask } from '@/redux'
 import { createSlice } from '@reduxjs/toolkit'
 
 type TasksState = { [key: string]: TaskType[] }
@@ -25,14 +25,14 @@ const tasksSlice = createSlice({
           (task: TaskType) => task.id !== action.payload.taskId
         )
       })
-      .addCase(changeTodoTaskIsDone.fulfilled, (state, action) => {
+      .addCase(updateTodoTask.fulfilled, (state, action) => {
         if (action.payload) {
-          const currentTask = state[action.payload.todoListId].find(
+          let currentTask = state[action.payload.todoListId].find(
             (t: TaskType) => t.id === action.payload?.id
           )
 
           if (currentTask) {
-            currentTask.status = action.payload.status
+            currentTask = action.payload
           }
         }
       })
