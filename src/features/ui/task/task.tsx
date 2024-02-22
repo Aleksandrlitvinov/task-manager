@@ -1,4 +1,4 @@
-import { ChangeEvent, useCallback, useState } from 'react'
+import { ChangeEvent, memo, useCallback, useState } from 'react'
 
 import { ResponseTaskType, TaskStatusEnum, TaskType } from '@/api'
 import { EditTitle } from '@/features'
@@ -11,7 +11,7 @@ import clsx from 'clsx'
 
 import s from './task.module.scss'
 
-export const Task = (props: ResponseTaskType) => {
+export const Task = memo((props: ResponseTaskType) => {
   const { item: task } = props
   const [showModal, setShowModal] = useState<boolean>(false)
   const dispatch = useAppDispatch()
@@ -78,4 +78,4 @@ export const Task = (props: ResponseTaskType) => {
       />
     </div>
   )
-}
+})

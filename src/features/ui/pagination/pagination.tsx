@@ -13,7 +13,7 @@ export const TodosPagination = () => {
     dispatch(changePage(page))
   }
 
-  if (todos.length < 4) {
+  if (todos.length <= 4) {
     return <></>
   }
 
