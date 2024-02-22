@@ -25,7 +25,7 @@ export const removeTodoTask = createAsyncThunk(
     return { taskId, todoListId }
   }
 )
-export const changeTodoTaskIsDone = createAsyncThunk(
+export const updateTodoTask = createAsyncThunk(
   `changeIsDone`,
   async ({ task, taskId, todoListId }: { task: TaskType; taskId: string; todoListId: string }) => {
     const data = await tasksApi.updateTask(taskId, todoListId, task)

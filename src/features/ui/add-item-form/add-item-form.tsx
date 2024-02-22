@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react'
+import React, { ChangeEvent, useState } from 'react'
 
 import { Input } from '@/shared'
 import { stylesAddItemForm, stylesBtnTask, stylesBtnTodo } from '@/styles'
@@ -6,27 +6,34 @@ import AddIcon from '@mui/icons-material/Add'
 import { Button, ThemeProvider } from '@mui/material'
 
 type AddItemFormPropsType = {
-  addItem: (e: React.FormEvent<HTMLFormElement>, value: string) => void
+  callback: (todoTitle: string, id?: string) => void
   className: string
-  error: boolean
-  inputValue: string
-  onChangeHandler: (e: ChangeEvent<HTMLInputElement>) => void
-  onValueChangeHandler: (taskTitle: string) => void
   placeholder: string
   stylesFor: 'task' | 'todo'
 }
 
 export const AddItemForm = (props: AddItemFormPropsType) => {
-  const {
-    addItem,
-    className,
-    error,
-    inputValue,
-    onChangeHandler,
-    onValueChangeHandler,
-    placeholder,
-    stylesFor,
-  } = props
+  const { callback, className, placeholder, stylesFor } = props
+  const [inputValue, setInputValue] = useState<string>('')
+  const [error, setError] = useState<boolean>(false)
+
+  const onInputChangeValue = (e: ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.currentTarget.value)
+  }
+
+  const onValueChangeHandler = (todoTitle: string) => {
+    setError(false)
+    setInputValue(todoTitle)
+  }
+  const addItem = (e: React.FormEvent<HTMLFormElement>, itemTitle: string) => {
+    e.preventDefault()
+    if (itemTitle.trim() === '') {
+      setError(true)
+    } else {
+      callback(itemTitle)
+    }
+    setInputValue('')
+  }
 
   return (
     <form onSubmit={e => addItem(e, inputValue)}>
@@ -34,7 +41,7 @@ export const AddItemForm = (props: AddItemFormPropsType) => {
         <ThemeProvider theme={stylesAddItemForm}>
           <Input
             error={error}
-            onChange={onChangeHandler}
+            onChange={onInputChangeValue}
             onValueChange={onValueChangeHandler}
             placeholder={placeholder}
             type={'text'}

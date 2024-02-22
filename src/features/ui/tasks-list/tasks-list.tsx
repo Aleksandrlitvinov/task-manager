@@ -1,14 +1,18 @@
+import { memo } from 'react'
+
 import { TaskType } from '@/api'
 import { Task } from '@/features'
+import { useAppSelector } from '@/hooks'
 import { FilterTasksType } from '@/redux'
 
 type TasksListProps = {
   filter: FilterTasksType
-  tasks: TaskType[]
+  todoId: string
 }
 
-export const TasksList = (props: TasksListProps) => {
-  const { filter, tasks } = props
+export const TasksList = memo((props: TasksListProps) => {
+  const { filter, todoId } = props
+  const tasks = useAppSelector(state => state.tasksList[todoId])
 
   let tasksForTodo = tasks
 
@@ -20,4 +24,4 @@ export const TasksList = (props: TasksListProps) => {
   }
 
   return <div>{tasksForTodo?.map((task: TaskType) => <Task item={task} key={task.id} />)}</div>
-}
+})
