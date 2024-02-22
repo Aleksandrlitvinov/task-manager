@@ -1,27 +1,33 @@
-import { ChangeEvent, useEffect, useState } from 'react'
+import { memo, useCallback, useEffect, useState } from 'react'
 
 import { TaskType } from '@/api'
 import { AddItemForm, EditTitle, FilterTasks, TasksList } from '@/features'
 import { useAppDispatch } from '@/hooks'
-import { FilterTasksType, changeTodoTitle, createTaskForTodo, getTodoTasks } from '@/redux'
+import {
+  FilterTasksType,
+  changeTodoTitle,
+  createTaskForTodo,
+  getTodoTasks,
+  removeTodo,
+} from '@/redux'
 import { ModalRemove } from '@/shared'
 import ClearIcon from '@mui/icons-material/Clear'
-import { Fab, Paper, Tooltip } from '@mui/material'
+import { Fab, Paper } from '@mui/material'
 
 import s from './todo.module.scss'
 
 type PropsTaskListType = {
   id: string
-  removeTodo: (id: string) => void
+  //removeTodo: (id: string) => void
   tasks: TaskType[]
   title: string
 }
 
-export const Todo = (props: PropsTaskListType) => {
+export const Todo = memo((props: PropsTaskListType) => {
   const dispatch = useAppDispatch()
-  const { id, removeTodo, tasks, title } = props
+  const { id, tasks, title } = props
   const [filterTasks, setFilterTasks] = useState<FilterTasksType>('all')
-  const [editMode, setEditMode] = useState<boolean>(false)
+  // const [editMode, setEditMode] = useState<boolean>(false)
   const [showModal, setShowModal] = useState<boolean>(false)
 
   const addNewTask = (taskTitle: string) => {
@@ -33,15 +39,18 @@ export const Todo = (props: PropsTaskListType) => {
     setFilterTasks(currentFilter as FilterTasksType)
   }
 
-  const onEditModeHandler = () => setEditMode(true)
-
-  const onChangeTitle = async (id: string, newTitle: string) => {
-    await dispatch(changeTodoTitle({ title: newTitle, todoId: id }))
-  }
-  const onViewMode = async (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    await onChangeTitle(id, e.currentTarget.value)
-    setEditMode(false)
-  }
+  const onChangeTitle = useCallback(
+    async (newTitle: string, id: string) => {
+      await dispatch(changeTodoTitle({ title: newTitle, todoId: id }))
+    },
+    [dispatch]
+  )
+  const removeTodoList = useCallback(
+    async (id: string) => {
+      await dispatch(removeTodo(id))
+    },
+    [dispatch]
+  )
 
   useEffect(() => {
     dispatch(getTodoTasks(id))
@@ -59,21 +68,20 @@ export const Todo = (props: PropsTaskListType) => {
           handleClose={() => setShowModal(false)}
           id={id}
           open={showModal}
-          removeItem={removeTodo}
+          removeItem={removeTodoList}
           title={title}
         />
-        <Tooltip placement={'top-start'} title={'double-click to edit'}>
-          <div className={s.tasksListTitle}>
-            <EditTitle
-              editMode={editMode}
-              label={'edit'}
-              onEditMode={onEditModeHandler}
-              onViewMode={onViewMode}
-              taskTitle={title}
-              textVariant={'h2'}
-            />
-          </div>
-        </Tooltip>
+
+        <div className={s.tasksListTitle}>
+          <EditTitle
+            callback={onChangeTitle}
+            itemId={id}
+            itemTitle={title}
+            label={'edit'}
+            textVariant={'h2'}
+          />
+        </div>
+
         <AddItemForm
           callback={addNewTask}
           className={s.form}
@@ -87,4 +95,4 @@ export const Todo = (props: PropsTaskListType) => {
       </div>
     </Paper>
   )
-}
+})

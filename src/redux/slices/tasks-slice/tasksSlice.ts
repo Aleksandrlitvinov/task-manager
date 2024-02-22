@@ -27,13 +27,11 @@ const tasksSlice = createSlice({
       })
       .addCase(updateTodoTask.fulfilled, (state, action) => {
         if (action.payload) {
-          let currentTask = state[action.payload.todoListId].find(
+          const currentTaskIdx = state[action.payload.todoListId].findIndex(
             (t: TaskType) => t.id === action.payload?.id
           )
 
-          if (currentTask) {
-            currentTask = action.payload
-          }
+          state[action.payload.todoListId].splice(currentTaskIdx, 1, action.payload)
         }
       })
   },

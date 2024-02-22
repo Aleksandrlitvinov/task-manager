@@ -1,19 +1,15 @@
-import { useEffect } from 'react'
+import { memo, useEffect } from 'react'
 
 import { Todo } from '@/features'
 import { useAppDispatch, useAppSelector } from '@/hooks'
-import { fetchTodos, removeTodo } from '@/redux'
+import { fetchTodos } from '@/redux'
 import { Grid } from '@mui/material'
 
-export const TodosList = () => {
+export const TodosList = memo(() => {
   const { currentPage, portion, todos } = useAppSelector(state => state.todoLists)
   const dispatch = useAppDispatch()
   const tasks = useAppSelector(state => state.tasksList)
   const todosPerPage = todos.slice((currentPage - 1) * portion, currentPage * portion)
-
-  const removeTodoList = async (id: string) => {
-    await dispatch(removeTodo(id))
-  }
 
   useEffect(() => {
     dispatch(fetchTodos())
@@ -27,14 +23,9 @@ export const TodosList = () => {
     <Grid container>
       {todosPerPage.map(todo => (
         <Grid item key={todo.id}>
-          <Todo
-            id={todo.id}
-            removeTodo={removeTodoList}
-            tasks={tasks[todo.id]}
-            title={todo.title}
-          />
+          <Todo id={todo.id} tasks={tasks[todo.id]} title={todo.title} />
         </Grid>
       ))}
     </Grid>
   )
-}
+})
