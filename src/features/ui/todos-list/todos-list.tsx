@@ -8,7 +8,6 @@ import { Grid } from '@mui/material'
 export const TodosList = memo(() => {
   const { currentPage, portion, todos } = useAppSelector(state => state.todoLists)
   const dispatch = useAppDispatch()
-  const tasks = useAppSelector(state => state.tasksList)
   const todosPerPage = todos.slice((currentPage - 1) * portion, currentPage * portion)
 
   useEffect(() => {
@@ -23,7 +22,7 @@ export const TodosList = memo(() => {
     <Grid container>
       {todosPerPage.map(todo => (
         <Grid item key={todo.id}>
-          <Todo id={todo.id} tasks={tasks[todo.id]} title={todo.title} />
+          <Todo id={todo.id} title={todo.title} />
         </Grid>
       ))}
     </Grid>

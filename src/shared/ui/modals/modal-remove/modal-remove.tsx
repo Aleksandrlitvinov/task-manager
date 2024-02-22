@@ -1,3 +1,5 @@
+import { useCallback } from 'react'
+
 import { Button, Dialog, DialogActions, DialogTitle } from '@mui/material'
 
 type ModalPropsType = {
@@ -9,10 +11,13 @@ type ModalPropsType = {
 }
 export const ModalRemove = (props: ModalPropsType) => {
   const { handleClose, id, open, removeItem, title } = props
-  const removeTask = (id: string) => {
-    removeItem(id)
-    handleClose()
-  }
+  const removeTask = useCallback(
+    (id: string) => {
+      removeItem(id)
+      handleClose()
+    },
+    [handleClose, removeItem]
+  )
 
   return (
     <Dialog

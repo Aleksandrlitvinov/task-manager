@@ -1,6 +1,5 @@
 import { memo, useCallback, useEffect, useState } from 'react'
 
-import { TaskType } from '@/api'
 import { AddItemForm, EditTitle, FilterTasks, TasksList } from '@/features'
 import { useAppDispatch } from '@/hooks'
 import {
@@ -18,21 +17,21 @@ import s from './todo.module.scss'
 
 type PropsTaskListType = {
   id: string
-  //removeTodo: (id: string) => void
-  tasks: TaskType[]
   title: string
 }
 
 export const Todo = memo((props: PropsTaskListType) => {
   const dispatch = useAppDispatch()
-  const { id, tasks, title } = props
+  const { id, title } = props
   const [filterTasks, setFilterTasks] = useState<FilterTasksType>('all')
-  // const [editMode, setEditMode] = useState<boolean>(false)
   const [showModal, setShowModal] = useState<boolean>(false)
 
-  const addNewTask = (taskTitle: string) => {
-    dispatch(createTaskForTodo({ title: taskTitle, todoId: id }))
-  }
+  const addNewTask = useCallback(
+    (taskTitle: string) => {
+      dispatch(createTaskForTodo({ title: taskTitle, todoId: id }))
+    },
+    [dispatch, id]
+  )
   const onClickSetFilterHandler = (value: string) => {
     const currentFilter = value.trim()
 
@@ -89,7 +88,7 @@ export const Todo = memo((props: PropsTaskListType) => {
           stylesFor={'task'}
         />
         <div className={s.tasksList}>
-          <TasksList filter={filterTasks} tasks={tasks} />
+          <TasksList filter={filterTasks} todoId={id} />
         </div>
         <FilterTasks filter={filterTasks} onClickSetFilter={onClickSetFilterHandler} />
       </div>
