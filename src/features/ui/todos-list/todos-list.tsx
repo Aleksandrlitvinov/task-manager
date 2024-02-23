@@ -3,7 +3,7 @@ import { memo, useCallback, useEffect } from 'react'
 import { AddItemForm, Todo } from '@/features'
 import { useAppDispatch, useAppSelector } from '@/hooks'
 import { createTodo, fetchTodos } from '@/redux'
-import { Loader } from '@/shared'
+import { Loader, Typography } from '@/shared'
 import { Grid } from '@mui/material'
 
 import s from '@/pages/todos-page/todos.module.scss'
@@ -34,6 +34,10 @@ export const TodosList = memo(() => {
       />
       {isLoading ? (
         <Loader />
+      ) : !todos.length ? (
+        <Typography style={{ textAlign: 'center' }} variant={'large'}>
+          Add your first Todo-List
+        </Typography>
       ) : (
         <Grid container>
           {todosPerPage.map(todo => (
