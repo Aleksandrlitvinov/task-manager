@@ -21,6 +21,10 @@ const authSlice = createSlice({
           state.isAuth = true
           state.isLoading = false
         }
+        if (action.payload.resultCode === ResultCodeEnum.ERROR) {
+          state.isAuth = false
+          state.isLoading = false
+        }
       })
       .addCase(me.fulfilled, (state, action) => {
         if (action.payload) {
