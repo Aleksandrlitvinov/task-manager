@@ -10,13 +10,12 @@ import {
 import { useAppDispatch, useAppSelector } from '@/hooks'
 import { SignInPage, TodosPage } from '@/pages'
 import { me } from '@/redux'
-import { Layout } from '@/shared'
-import { CircularProgress } from '@mui/material'
+import { Layout, Loader } from '@/shared'
 
 const publicRoutes: RouteObject[] = [
   {
     element: <SignInPage />,
-    path: '/sign-in',
+    path: '/sign-in-page',
   },
 ]
 
@@ -49,7 +48,7 @@ export const Router = () => {
   }, [dispatch])
 
   if (isLoading) {
-    return <CircularProgress color={'secondary'} />
+    return <Loader />
   }
 
   return <RouterProvider router={router} />
@@ -59,8 +58,8 @@ function PrivateRoutes() {
   const { isAuth, isLoading } = useAppSelector(state => state.auth)
 
   if (isLoading) {
-    return <CircularProgress color={'secondary'} />
+    return <Loader />
   }
 
-  return isAuth ? <Outlet /> : <Navigate to={'/sign-in'} />
+  return isAuth ? <Outlet /> : <Navigate to={'/sign-in-page'} />
 }

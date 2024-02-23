@@ -1,2 +1,2 @@
-export * from './todos'
-export * from './sign-in'
+export * from './todos-page'
+export * from './sign-in-page'
