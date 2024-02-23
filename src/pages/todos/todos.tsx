@@ -1,8 +1,5 @@
-import { useEffect } from 'react'
-
 import { TodosList, TodosPagination } from '@/features'
-import { useAppDispatch, useAppSelector } from '@/hooks'
-import { me } from '@/redux'
+import { useAppSelector } from '@/hooks'
 import { CircularProgress, ThemeProvider } from '@mui/material'
 
 import s from './todos.module.scss'
@@ -11,11 +8,6 @@ import { stylesTodos } from './todos.styles'
 
 export const TodosPage = () => {
   const isLoading = useAppSelector(state => state.auth.isLoading)
-  const dispatch = useAppDispatch()
-
-  useEffect(() => {
-    dispatch(me())
-  }, [dispatch])
 
   return (
     <div>

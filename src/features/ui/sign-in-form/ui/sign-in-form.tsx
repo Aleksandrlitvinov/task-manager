@@ -18,6 +18,7 @@ export const SignInForm = () => {
       password: '',
       rememberMe: false,
     },
+    mode: 'onSubmit',
     resolver: zodResolver(loginSchema()),
   })
 

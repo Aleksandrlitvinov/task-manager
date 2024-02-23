@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import {
   Navigate,
   Outlet,
@@ -6,9 +7,11 @@ import {
   createBrowserRouter,
 } from 'react-router-dom'
 
-import { useAppSelector } from '@/hooks'
+import { useAppDispatch, useAppSelector } from '@/hooks'
 import { SignInPage, TodosPage } from '@/pages'
+import { me } from '@/redux'
 import { Layout } from '@/shared'
+import { CircularProgress } from '@mui/material'
 
 const publicRoutes: RouteObject[] = [
   {
@@ -38,11 +41,26 @@ const router = createBrowserRouter([
 ])
 
 export const Router = () => {
+  const dispatch = useAppDispatch()
+  const isLoading = useAppSelector(state => state.auth.isLoading)
+
+  useEffect(() => {
+    dispatch(me())
+  }, [dispatch])
+
+  if (isLoading) {
+    return <CircularProgress color={'secondary'} />
+  }
+
   return <RouterProvider router={router} />
 }
 
 function PrivateRoutes() {
-  const isAuth = useAppSelector(state => state.auth.isAuth)
+  const { isAuth, isLoading } = useAppSelector(state => state.auth)
+
+  if (isLoading) {
+    return <CircularProgress color={'secondary'} />
+  }
 
   return isAuth ? <Outlet /> : <Navigate to={'/sign-in'} />
 }

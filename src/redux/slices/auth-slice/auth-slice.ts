@@ -28,6 +28,11 @@ const authSlice = createSlice({
           state.login = action.payload.login
           state.isLoading = false
         }
+        if (!action.payload) {
+          state.isAuth = false
+          state.login = null
+          state.isLoading = false
+        }
       })
       .addCase(logout.fulfilled, (state, action) => {
         if (action.payload.resultCode === ResultCodeEnum.SUCCESS) {
