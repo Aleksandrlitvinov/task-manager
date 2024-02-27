@@ -88,7 +88,7 @@ export const Todo = memo((props: PropsTaskListType) => {
           stylesFor={'task'}
         />
         <div className={s.tasksList}>
-          <TasksList filter={filterTasks} todoId={id} />
+          <TasksList filter={filterTasks} todoId={id} todoTitle={title} />
         </div>
         <FilterTasks filter={filterTasks} onClickSetFilter={onClickSetFilterHandler} />
       </div>

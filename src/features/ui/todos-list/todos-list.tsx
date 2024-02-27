@@ -3,7 +3,7 @@ import { memo, useCallback, useEffect } from 'react'
 import { AddItemForm, Todo } from '@/features'
 import { useAppDispatch, useAppSelector } from '@/hooks'
 import { createTodo, fetchTodos } from '@/redux'
-import { Loader, Typography } from '@/shared'
+import { TodoSkeleton, Typography } from '@/shared'
 import { Grid } from '@mui/material'
 
 import s from '@/pages/todos-page/todos.module.scss'
@@ -33,8 +33,16 @@ export const TodosList = memo(() => {
         stylesFor={'todo'}
       />
       {isLoading ? (
-        <Loader />
-      ) : !todos.length ? (
+        <Grid container>
+          {Array(4)
+            .fill(0)
+            .map((_, idx) => (
+              <Grid item key={idx}>
+                <TodoSkeleton />
+              </Grid>
+            ))}
+        </Grid>
+      ) : !todos ? (
         <Typography style={{ textAlign: 'center' }} variant={'large'}>
           Add your first Todo-List
         </Typography>
