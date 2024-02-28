@@ -11,6 +11,7 @@ export const instance = axios.create({
 })
 
 export enum ResultCodeEnum {
+  CAPTCHA_IS_REQUIRED = 10,
   ERROR = 1,
   SUCCESS = 0,
 }
