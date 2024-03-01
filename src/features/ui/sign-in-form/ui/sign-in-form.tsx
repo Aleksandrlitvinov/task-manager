@@ -1,7 +1,7 @@
 import { Controller, FormProvider, useForm } from 'react-hook-form'
 
 import { loginFormValuesType, loginSchema } from '@/features'
-import { useAppDispatch } from '@/hooks'
+import { useAppDispatch, useAppSelector } from '@/hooks'
 import { login } from '@/redux'
 import { Input } from '@/shared'
 import { stylesAddItemForm, stylesBtnTask } from '@/styles'
@@ -12,8 +12,10 @@ import s from './sign-in-form.module.scss'
 
 export const SignInForm = () => {
   const dispatch = useAppDispatch()
+  const captchaUrl = useAppSelector(state => state.auth.captchaUrl)
   const methods = useForm<loginFormValuesType>({
     defaultValues: {
+      captcha: '',
       email: '',
       password: '',
       rememberMe: false,
@@ -25,7 +27,7 @@ export const SignInForm = () => {
   const onHandleSubmit = async (data: loginFormValuesType) => {
     await dispatch(login(data))
       .unwrap()
-      .then(res => res.data.userId)
+      .then(res => res.userId)
       .catch(err => console.log(err))
   }
 
@@ -67,6 +69,27 @@ export const SignInForm = () => {
               />
             </ThemeProvider>
           </div>
+          {captchaUrl && (
+            <div>
+              <img alt={'captcha'} src={captchaUrl} />
+              <div className={s.textField}>
+                <ThemeProvider theme={stylesAddItemForm}>
+                  <Controller
+                    control={methods.control}
+                    name={'captcha'}
+                    render={({ field, fieldState: { error } }) => (
+                      <Input
+                        errorInput={error?.message}
+                        placeholder={'Write symbols'}
+                        type={'text'}
+                        {...field}
+                      />
+                    )}
+                  />
+                </ThemeProvider>
+              </div>
+            </div>
+          )}
           <div className={s.formCheckbox}>
             <Controller
               control={methods.control}
