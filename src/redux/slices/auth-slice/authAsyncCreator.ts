@@ -1,23 +1,45 @@
 import { RequestLoginType, ResultCodeEnum, authApi, securityApi } from '@/api'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 
-export const login = createAsyncThunk(`login`, async (data: RequestLoginType, { dispatch }) => {
-  const loginData = await authApi.login(data)
+export const login = createAsyncThunk(
+  `login`,
+  async (data: RequestLoginType, { dispatch, rejectWithValue }) => {
+    try {
+      const loginData = await authApi.login(data)
 
-  if (loginData.resultCode === ResultCodeEnum.CAPTCHA_IS_REQUIRED) {
-    dispatch(getCaptchaUrl())
+      if (loginData.resultCode === ResultCodeEnum.SUCCESS) {
+        return loginData.data
+      }
+      if (loginData.resultCode === ResultCodeEnum.ERROR) {
+        throw new Error(loginData.messages[0])
+      }
+      if (loginData.resultCode === ResultCodeEnum.CAPTCHA_IS_REQUIRED) {
+        dispatch(getCaptchaUrl())
 
-    return loginData.data
-  } else {
-    return loginData.data
+        return loginData.data
+      }
+    } catch (e: unknown) {
+      if (e instanceof Error) {
+        return rejectWithValue(e.message)
+      }
+    }
   }
-})
+)
 
-export const me = createAsyncThunk(`me`, async () => {
-  const data = await authApi.me()
+export const me = createAsyncThunk(`me`, async (_, { rejectWithValue }) => {
+  try {
+    const data = await authApi.me()
 
-  if (data.resultCode === ResultCodeEnum.SUCCESS) {
-    return data.data
+    if (data.resultCode === ResultCodeEnum.SUCCESS) {
+      return data.data
+    }
+    if (data.resultCode === ResultCodeEnum.ERROR) {
+      throw new Error(data.messages[0])
+    }
+  } catch (e) {
+    if (e instanceof Error) {
+      return rejectWithValue(e.message)
+    }
   }
 })
 

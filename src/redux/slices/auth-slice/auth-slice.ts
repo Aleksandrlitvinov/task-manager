@@ -5,6 +5,7 @@ import { createSlice, isAnyOf } from '@reduxjs/toolkit'
 
 type AuthType = {
   captchaUrl: null | string
+  errorMessage: string
   isAuth: boolean
   isLoading: boolean
   login: null | string
@@ -13,6 +14,7 @@ type AuthType = {
 
 const initialState: AuthType = {
   captchaUrl: null,
+  errorMessage: '',
   isAuth: false,
   isLoading: false,
   login: null,
@@ -37,6 +39,10 @@ const authSlice = createSlice({
           }
         }
       })
+      .addCase(login.rejected, (state, action) => {
+        state.errorMessage = action.payload as string
+        state.isLoading = false
+      })
       .addCase(me.fulfilled, (state, action) => {
         if (action.payload) {
           state.isAuth = true
@@ -48,6 +54,10 @@ const authSlice = createSlice({
           state.login = null
           state.isLoading = false
         }
+      })
+      .addCase(me.rejected, (state, action) => {
+        state.errorMessage = action.payload as string
+        state.isLoading = false
       })
       .addCase(logout.fulfilled, (state, action) => {
         if (action.payload.resultCode === ResultCodeEnum.SUCCESS) {
