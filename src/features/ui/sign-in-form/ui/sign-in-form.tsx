@@ -12,7 +12,7 @@ import s from './sign-in-form.module.scss'
 
 export const SignInForm = () => {
   const dispatch = useAppDispatch()
-  const captchaUrl = useAppSelector(state => state.auth.captchaUrl)
+  const { captchaUrl, errorMessage } = useAppSelector(state => state.auth)
   const methods = useForm<loginFormValuesType>({
     defaultValues: {
       captcha: '',
@@ -27,7 +27,7 @@ export const SignInForm = () => {
   const onHandleSubmit = async (data: loginFormValuesType) => {
     await dispatch(login(data))
       .unwrap()
-      .then(res => res.userId)
+      .then(res => res?.userId)
       .catch(err => console.log(err))
   }
 
@@ -90,6 +90,7 @@ export const SignInForm = () => {
               </div>
             </div>
           )}
+          <div>{errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}</div>
           <div className={s.formCheckbox}>
             <Controller
               control={methods.control}

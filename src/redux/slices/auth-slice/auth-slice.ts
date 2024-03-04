@@ -1,10 +1,10 @@
-import { ResultCodeEnum } from '@/api'
 import { login, logout, me } from '@/redux'
 import { getCaptchaUrl } from '@/redux/slices/auth-slice/authAsyncCreator'
 import { createSlice, isAnyOf } from '@reduxjs/toolkit'
 
 type AuthType = {
   captchaUrl: null | string
+  errorMessage: string
   isAuth: boolean
   isLoading: boolean
   login: null | string
@@ -13,6 +13,7 @@ type AuthType = {
 
 const initialState: AuthType = {
   captchaUrl: null,
+  errorMessage: '',
   isAuth: false,
   isLoading: false,
   login: null,
@@ -37,6 +38,10 @@ const authSlice = createSlice({
           }
         }
       })
+      .addCase(login.rejected, (state, action) => {
+        state.errorMessage = action.payload as string
+        state.isLoading = false
+      })
       .addCase(me.fulfilled, (state, action) => {
         if (action.payload) {
           state.isAuth = true
@@ -49,12 +54,18 @@ const authSlice = createSlice({
           state.isLoading = false
         }
       })
-      .addCase(logout.fulfilled, (state, action) => {
-        if (action.payload.resultCode === ResultCodeEnum.SUCCESS) {
-          state.isAuth = false
-          state.isLoading = false
-          state.login = null
-        }
+      .addCase(me.rejected, (state, action) => {
+        state.errorMessage = action.payload as string
+        state.isLoading = false
+      })
+      .addCase(logout.fulfilled, state => {
+        state.isAuth = false
+        state.isLoading = false
+        state.login = null
+        state.errorMessage = ''
+      })
+      .addCase(logout.rejected, (state, action) => {
+        state.errorMessage = action.payload as string
       })
       .addMatcher(isAnyOf(login.pending, logout.pending, me.pending), state => {
         state.isLoading = true
