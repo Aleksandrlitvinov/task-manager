@@ -43,8 +43,21 @@ export const me = createAsyncThunk(`me`, async (_, { rejectWithValue }) => {
   }
 })
 
-export const logout = createAsyncThunk(`logout`, async () => {
-  return await authApi.logout()
+export const logout = createAsyncThunk(`logout`, async (_, { rejectWithValue }) => {
+  try {
+    const response = await authApi.logout()
+
+    if (response.resultCode === ResultCodeEnum.SUCCESS) {
+      return response
+    }
+    if (response.resultCode === ResultCodeEnum.ERROR) {
+      throw new Error(response.messages[0])
+    }
+  } catch (e: unknown) {
+    if (e instanceof Error) {
+      return rejectWithValue(e)
+    }
+  }
 })
 
 export const getCaptchaUrl = createAsyncThunk(`getCaptchaURL`, async () => {
